@@ -15,7 +15,7 @@ using namespace std;
 int main(int argc, char** argv )
 {
 
-  Mat image2 = imread( "../data/blurred_finger.png" , IMREAD_COLOR );
+  Mat image2 = imread( "../../data/blurred_finger.png" , IMREAD_COLOR );
 
 
 
