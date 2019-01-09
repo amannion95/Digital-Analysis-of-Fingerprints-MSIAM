@@ -20,6 +20,7 @@ class Picture{
     Picture(unsigned int x_length,unsigned int y_length);
     Picture(const cv::Mat& pic);
     Picture();
+    float** get_matrix();
     float get_intensity(unsigned int i, unsigned int j)const;
     void set_intensity(unsigned int i, unsigned int j,float intensity);
     void operator=(Picture pic);
