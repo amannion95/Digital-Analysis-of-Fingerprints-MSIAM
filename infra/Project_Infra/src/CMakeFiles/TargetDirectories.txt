@@ -1,3 +1,0 @@
-/home/f/faysm/MSIAM/Projet/sources/CMakeFiles/edit_cache.dir
-/home/f/faysm/MSIAM/Projet/sources/CMakeFiles/rebuild_cache.dir
-/home/f/faysm/MSIAM/Projet/sources/CMakeFiles/program.dir
