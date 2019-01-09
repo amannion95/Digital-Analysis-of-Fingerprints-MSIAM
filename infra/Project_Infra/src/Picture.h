@@ -28,9 +28,10 @@ class Picture{
     void print_picture()const;
     float maximum_intensity()const;
     float minimum_intensity()const;
-    Picture symmetry_transform()const;
-    Picture diagonal_symmetry_up_to_()const;
-    Picture diagonal_symmetry_low_to_()const;
+    Picture symmetry_wrt_y()const;
+    Picture symmetry_wrt_x()const;
+    Picture diagonal_symmetry_top_to_bottom()const;
+    Picture diagonal_symmetry_bottom_to_top()const;
     Picture clone()const;
 
 };

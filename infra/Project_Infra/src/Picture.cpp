@@ -8,8 +8,8 @@ using namespace cv;
 
 Picture::Picture(const std::string& filename){
   picture=imread(filename);
-  x_length=(picture.size()).height;
-  y_length=(picture.size()).width;
+  x_length=(picture.size()).width;
+  y_length=(picture.size()).height;
 }
 
 Picture::Picture(unsigned int x_length,unsigned int y_length){
@@ -21,8 +21,8 @@ Picture::Picture(unsigned int x_length,unsigned int y_length){
 
 Picture::Picture(const cv::Mat& pic){
   picture=pic.clone();
-  x_length=(picture.size()).height;
-  y_length=(picture.size()).width;
+  x_length=(picture.size()).width;
+  y_length=(picture.size()).height;
 }
 
 Picture::Picture(){
@@ -51,7 +51,7 @@ void Picture::print_picture()const{
 }
 
 
-Picture Picture::symmetry_transform()const{
+Picture Picture::symmetry_wrt_y()const{
   Picture symmetry;
   symmetry=clone();
   std::cout<<symmetry.x_length<<std::endl;
@@ -64,7 +64,21 @@ Picture Picture::symmetry_transform()const{
   return symmetry;
 }
 
-Picture Picture::diagonal_symmetry_up_to_()const{
+
+Picture Picture::symmetry_wrt_x()const{
+  Picture symmetry;
+  symmetry=clone();
+  std::cout<<symmetry.x_length<<std::endl;
+  for(int j=0;j<y_length;j++){
+    for(int i=0;i<x_length;i++){
+      symmetry.set_intensity(y_length-1-j,i,get_intensity(j,i));
+    }
+  }
+
+  return symmetry;
+}
+Picture Picture::diagonal_symmetry_top_to_bottom()const{
+  //ony work for squares actually.
   Picture symmetry;
   symmetry=clone();
   std::cout<<symmetry.x_length<<std::endl;
@@ -75,7 +89,10 @@ Picture Picture::diagonal_symmetry_up_to_()const{
   }
   return symmetry;
 }
-Picture diagonal_symmetry_low_to_()const{}
+
+
+
+Picture Picture::diagonal_symmetry_bottom_to_top()const{}
 
 
 
