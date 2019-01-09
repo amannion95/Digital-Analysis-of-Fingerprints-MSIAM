@@ -44,9 +44,19 @@ int main(int argc, char** argv )
     /*Mat image2 = imread( "../../data/squares.png" , IMREAD_GRAYSCALE );
     //cvtColor( image, image2, CV_BGR2GRAY );
     namedWindow("Display Image", WINDOW_NORMAL );
+<<<<<<< HEAD
     Picture pic(image2);
     Mat img (300,200,CV_8UC1);
     Picture img_pic(img);
+=======
+
+
+    Picture pic(image2);
+
+    Mat img (300,200,CV_8UC1);
+    Picture img_pic(img);
+
+>>>>>>> f87c428abb79fb9386c127916096ca74321b55e1
     for(int j=0;j<img_pic.get_y_len()-50 ;j++){
       for(int i=0;i<img_pic.get_x_len()-50;i++){
         img_pic.set_intensity(j,i,1);
