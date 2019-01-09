@@ -1,6 +1,6 @@
 #include "Picture.h"
 #include "Usefull_functions.h"
-
+#include <cassert>
 using namespace cv;
 using namespace std;
 
@@ -40,7 +40,7 @@ void Picture::print_picture()const{
   waitKey(0);
 }
 
-float Picture::maximum_intensity(){
+float Picture::maximum_intensity()const{
   float max_intensity=0.;
     for (int i = 0 ; i < x_length ; i++ ){
       for (int j = 0 ; j < y_length ; j++ ){
@@ -50,12 +50,25 @@ float Picture::maximum_intensity(){
    return(max_intensity);
  }
 
-float Picture::minimum_intensity(){
+float Picture::minimum_intensity()const{
   float min_intensity=1.;
-    for (int i = 0 ; i < x_length ; i++ ){
-      for (int j = 0 ; j < y_length ; j++ ){
-        min_intensity=min(get_intensity(i,j),min_intensity);
-      }
+  for (int i = 0 ; i < x_length ; i++ ){
+    for (int j = 0 ; j < y_length ; j++ ){
+      min_intensity=min(get_intensity(i,j),min_intensity);
     }
+  }
   return(min_intensity);
+}
+
+
+void Picture::rescale_color(){
+  float min_intensity = minimum_intensity();
+  float max_intensity = maximum_intensity();
+  float size = max_intensity - min_intensity;
+  assert ( size != 0 ) ;
+  for (int i = 0 ; i < x_length ; i++ ){
+    for (int j = 0 ; j < y_length ; j++ ){
+      set_intensity(i,j,(get_intensity(i,j)-min_intensity)/size);
+    }
+  }
 }

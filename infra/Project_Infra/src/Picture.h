@@ -25,8 +25,9 @@ class Picture{
 
     void print_picture()const;
 
-    float maximum_intensity();
-    float minimum_intensity();
+    float maximum_intensity() const;
+    float minimum_intensity() const;
+    void rescale_color();
 
     Picture symmetry_transform()const;
 
