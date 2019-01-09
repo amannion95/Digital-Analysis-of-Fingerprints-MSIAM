@@ -68,7 +68,6 @@ Picture Picture::symmetry_wrt_y()const{
 Picture Picture::symmetry_wrt_x()const{
   Picture symmetry;
   symmetry=clone();
-  std::cout<<symmetry.x_length<<std::endl;
   for(int j=0;j<y_length;j++){
     for(int i=0;i<x_length;i++){
       symmetry.set_intensity(y_length-1-j,i,get_intensity(j,i));
@@ -78,23 +77,16 @@ Picture Picture::symmetry_wrt_x()const{
   return symmetry;
 }
 Picture Picture::diagonal_symmetry_top_to_bottom()const{
-  //ony work for squares actually.
-  Picture symmetry;
-  symmetry=clone();
-  std::cout<<symmetry.x_length<<std::endl;
-  for(int j=0;j<y_length;j++){
-    for(int i=0;i<x_length;i++){
-      symmetry.set_intensity(i,j,get_intensity(j,i));
-    }
-  }
-  return symmetry;
+  Picture sym(picture.t());
+  return sym;
 }
 
 
 
-Picture Picture::diagonal_symmetry_bottom_to_top()const{}
-
-
+Picture Picture::diagonal_symmetry_bottom_to_top()const{
+  Picture sym(picture.t());
+  return sym.symmetry_wrt_y().symmetry_wrt_x();
+}
 
 void Picture::operator=(Picture Pic){
   picture=(Pic.picture).clone();
