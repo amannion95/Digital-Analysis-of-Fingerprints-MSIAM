@@ -15,6 +15,12 @@ iftoi : Takes color intensity a float between [0,255] and converts it into an in
 ----     */
 int iftoi(float color);
 
+/*  ------
+display_mat : Takes a matrix, it's number of row, it's number of col and display it
+----     */
+void display_matrix(float ** matrix,int row, int col);
+
+
 
 
 
