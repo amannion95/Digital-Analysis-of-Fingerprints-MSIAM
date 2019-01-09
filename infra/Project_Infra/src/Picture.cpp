@@ -12,16 +12,12 @@ Picture::Picture(const std::string& filename){
   y_length=(picture.size()).width;
 }
 
-Picture::Picture(unsigned int x_length,unsigned int y_length){
+Picture::Picture(unsigned int x_length=0,unsigned int y_length=0){
   Mat image(y_length,x_length,CV_8UC1);
-
-  //check if it is y_len then x_len or x_len then y_len
-
   picture=image.clone();
   this->x_length=x_length;
   this->y_length=y_length;
 }
-
 
 Picture::Picture(const cv::Mat& pic){
   picture=pic.clone();
@@ -48,18 +44,17 @@ void Picture::print_picture()const{
 
 
 Picture Picture::symmetry_transform()const{
-  Picture tmp(x_length,y_length);
   Picture symmetry(x_length,y_length);
-  if (x_length%2==0){
-    for(int i=0;i<x_length/2;i++){
-      for(int j=0;j<y_length;j++){
-        tmp.set_intensity(i,j,)
+  for(int i=0;i<x_length;i++){
+    for(int j=0;j<y_length;j++){
+      symmetry.set_intensity(y_length-1-j,x_length-1-i,this->get_intensity(j,i));
     }
   }
-  else {
-
-  }
-
-
   return symmetry;
+}
+
+void Picture::operator=(Picture Pic){
+  picture=(Pic.picture).clone();
+  x_length=Pic.x_length;
+  y_length=Pic.y_length;
 }

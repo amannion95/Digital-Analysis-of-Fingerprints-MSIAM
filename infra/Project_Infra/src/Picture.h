@@ -22,11 +22,10 @@ class Picture{
     float get_intensity(unsigned int i, unsigned int j)const;
 
     void set_intensity(unsigned int i, unsigned int j,float intensity);
-
+    void operator=(Picture pic);
     void print_picture()const;
 
     Picture symmetry_transform()const;
-
 };
 
 
