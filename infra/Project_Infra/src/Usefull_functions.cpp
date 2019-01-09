@@ -20,3 +20,12 @@ int iftoi(float color){
     else return(int(color*255));
 
 }
+
+void display_matrix(float ** matrix,int row, int col){
+  for (int i=0; i<col;i++){
+    for(int j=0; j<row;j++){
+      cout << matrix[i][j] << "\t";
+    }
+    cout << "\n";
+  }
+}
