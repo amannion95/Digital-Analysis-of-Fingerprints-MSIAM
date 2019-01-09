@@ -141,3 +141,18 @@ void Picture::rescale_color(){
     }
   }
 }
+
+float** Picture::get_matrix(){
+  int row=x_length;
+  int col=y_length;
+  float **matrix = new float*[row];
+  for ( int i = 0 ; i < row ; i ++ ) {
+    matrix[i] = new float[col];
+  }
+  for(int i = 0 ; i < row; i++ ){
+    for(int j = 0 ; j < col ; j++ ){
+      matrix[i][j] = iitof(picture.data[i*row+j]);
+    }
+  }
+  return matrix;
+}
