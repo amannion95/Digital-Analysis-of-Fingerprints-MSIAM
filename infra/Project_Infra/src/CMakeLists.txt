@@ -8,7 +8,7 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 add_executable( boximage boximage.cpp Picture.cpp Usefull_functions.cpp )
 add_executable( DisplayImage DisplayImage.cpp )
-add_executable( program main.cpp Picture.cpp)
+add_executable( program main.cpp Picture.cpp Usefull_functions.cpp)
 
 target_link_libraries( boximage ${OpenCV_LIBS} )
 target_link_libraries( DisplayImage ${OpenCV_LIBS} )

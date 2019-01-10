@@ -45,7 +45,6 @@ void Picture::set_intensity(unsigned int i, unsigned int j,float intensity){
 }
 
 void Picture::print_picture()const{
-  std::cout<<"X_len : "<<x_length<<" Y_len : "<<y_length<<std::endl;
   namedWindow("Display Image", WINDOW_NORMAL );
   imshow("Display Image", picture);
   waitKey(0);
@@ -97,21 +96,25 @@ void Picture::operator=(Picture Pic){
 
 float Picture::maximum_intensity()const{
   float max_intensity=0.;
-    for (int i = 0 ; i < x_length ; i++ ){
-      for (int j = 0 ; j < y_length ; j++ ){
-        max_intensity=max(get_intensity(i,j),max_intensity);
+  for (int i = 0 ; i < x_length ; i++ ){
+    for (int j = 0 ; j < y_length ; j++ ){
+      if (max_intensity<get_intensity(j,i)){
+          max_intensity=get_intensity(j,i);
       }
     }
-   return(max_intensity);
+  }
+  return(max_intensity);
 }
 
 float Picture::minimum_intensity()const{
   float min_intensity=1.;
-    for (int i = 0 ; i < x_length ; i++ ){
-      for (int j = 0 ; j < y_length ; j++ ){
-        min_intensity=min(get_intensity(i,j),min_intensity);
+  for (int i = 0 ; i < x_length ; i++ ){
+    for (int j = 0 ; j < y_length ; j++ ){
+      if (min_intensity>get_intensity(j,i)){
+          min_intensity=get_intensity(j,i);
       }
     }
+  }
   return(min_intensity);
 }
 
@@ -201,4 +204,50 @@ Point_<int> Picture::center_of_pressure(){
   }
   Point p(x_coordinate,y_coordinate);
   return p;
+}
+
+
+//-----------------------------------------------------------
+//add by tristan 10th jan
+
+//win_size must be odd ! Apply gaussian filter to the picture
+Picture Picture::apply_gaussian_blur(int win_size=5)const{
+  Mat blured_picture;
+  GaussianBlur(picture,blured_picture,Size(win_size,win_size),0,0);
+  Picture blured_Pic(blured_picture);
+  return blured_Pic;
+}
+
+Point Picture::get_index_maximum_intensity()const{
+  Point coord_min(0,0);
+  Point coord_max(0,0);
+  double x,y;
+  minMaxLoc(picture, &x, &y, &coord_min, &coord_max);
+  return coord_max;
+}
+
+Point Picture::get_index_minimum_intensity()const{
+  Point coord_min(0,0);
+  Point coord_max(0,0);
+  double x,y;
+  minMaxLoc(picture, &x, &y, &coord_min, &coord_max);
+  return coord_min;
+}
+
+void Picture::print_pression_center(int size_win_gauss=5)const{
+  int x,y;
+  Picture img=apply_gaussian_blur(size_win_gauss);
+  Picture print(picture);
+
+  img.print_picture();
+  x=img.get_index_minimum_intensity().x;
+  y=img.get_index_minimum_intensity().y;
+  for (int i=x-10;i<x+10;i++){
+    for(int j=y-10;j<y+10;j++){
+      img.set_intensity(j,i,0.7);
+      print.set_intensity(j,i,0.7);
+    }
+  }
+  img.print_picture();
+  print.print_picture();
 }
