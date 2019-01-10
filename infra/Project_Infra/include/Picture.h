@@ -34,6 +34,7 @@ class Picture{
     Picture diagonal_symmetry_bottom_to_top()const;
     Picture clone()const;
     void rescale_color();
+    float** get_matrix();
 };
 
 
