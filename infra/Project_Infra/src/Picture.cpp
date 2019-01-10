@@ -38,7 +38,7 @@ float Picture::get_intensity(unsigned int i, unsigned int j)const{
 
 void Picture::set_intensity(unsigned int i, unsigned int j,float intensity){
   if ((intensity<0)||(intensity>1)){
-    std::cerr<<"Wrong intensity value, she must belong to [0,1]"<<std::endl;
+    std::cerr<<"Wrong intensity value, it must belong to [0,1]"<<std::endl;
   }
   picture.at<uchar>(i,j)=iftoi(intensity);
 }
