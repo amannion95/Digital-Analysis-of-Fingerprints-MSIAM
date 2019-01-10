@@ -1,6 +1,6 @@
 #include "Picture.h"
 #include "Usefull_functions.h"
-#include <cstdlib>
+#include <cstdlib> // absolute value
 
 using namespace cv;
 
