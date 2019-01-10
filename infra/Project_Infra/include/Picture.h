@@ -35,6 +35,7 @@ class Picture{
     Picture clone()const;
     void rescale_color();
     float** get_matrix();
+    cv::Point center_of_pressure();
 };
 
 

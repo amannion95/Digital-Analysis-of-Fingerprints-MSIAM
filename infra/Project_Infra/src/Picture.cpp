@@ -1,5 +1,6 @@
 #include "Picture.h"
 #include "Usefull_functions.h"
+#include <cstdlib> // absolute value
 
 using namespace cv;
 
@@ -155,4 +156,49 @@ float** Picture::get_matrix(){
     }
   }
   return matrix;
+}
+
+Point_<int> Picture::center_of_pressure(){
+  for(int i = 0 ; i < x_length ; i++){
+    for(int j = 0; j< y_length ; j++){
+      if(get_intensity(i,j)>=0.2){
+        set_intensity(i,j,0);
+      }
+    }
+  }
+  float** min_distance_to_others;
+  int row=x_length;
+  int col=y_length;
+  int nb_pts_unchanged=0;
+  float **distance_to_others = new float*[row];
+  for ( int i = 0 ; i < row ; i ++ ) {
+    distance_to_others[i] = new float[col];
+  }
+  for(int i=0;i<x_length;i++){
+    for(int j=0;j<y_length;j++){
+      for (int ii=0;ii<x_length;ii++){
+        for (int jj=0;jj<y_length;jj++){
+          if(get_intensity(ii,jj)!=0 || (ii!=i && jj!=j) ){
+            distance_to_others[i][j]=distance_to_others[i][j]+(abs(ii-i)+abs(jj-j));
+            nb_pts_unchanged++;
+          }
+        }
+      }
+      distance_to_others[i][j]=distance_to_others[i][j]/(nb_pts_unchanged-1) ;
+    }
+  }
+  int x_coordinate;
+  int y_coordinate;
+  float min_distance=distance_to_others[0][0];
+  for (int i=0;i<x_length;i++){
+    for (int j=0;j<y_length;j++){
+      if(min_distance>distance_to_others[i][j]){
+        x_coordinate=i;
+        y_coordinate=j;
+        min_distance=distance_to_others[i][j];
+      }
+    }
+  }
+  Point p(x_coordinate,y_coordinate);
+  return p;
 }
