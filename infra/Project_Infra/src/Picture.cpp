@@ -199,5 +199,6 @@ Point_<int> Picture::center_of_pressure(){
       }
     }
   }
-  Point pressure_center(x_coordinate,y_coordinate);
+  Point p(x_coordinate,y_coordinate);
+  return p;
 }
