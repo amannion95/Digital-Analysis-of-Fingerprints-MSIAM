@@ -49,7 +49,6 @@ void Picture::set_intensity(unsigned int i, unsigned int j,float intensity){
 }
 
 void Picture::print_picture()const{
-  std::cout<<"X_len : "<<x_length<<" Y_len : "<<y_length<<std::endl;
   namedWindow("Display Image", WINDOW_NORMAL );
   imshow("Display Image", picture);
   waitKey(0);
@@ -101,21 +100,25 @@ void Picture::operator=(Picture Pic){
 
 float Picture::maximum_intensity()const{
   float max_intensity=0.;
-    for (int i = 0 ; i < x_length ; i++ ){
-      for (int j = 0 ; j < y_length ; j++ ){
-        max_intensity=max(get_intensity(i,j),max_intensity);
+  for (int i = 0 ; i < x_length ; i++ ){
+    for (int j = 0 ; j < y_length ; j++ ){
+      if (max_intensity<get_intensity(j,i)){
+          max_intensity=get_intensity(j,i);
       }
     }
-   return(max_intensity);
+  }
+  return(max_intensity);
 }
 
 float Picture::minimum_intensity()const{
   float min_intensity=1.;
-    for (int i = 0 ; i < x_length ; i++ ){
-      for (int j = 0 ; j < y_length ; j++ ){
-        min_intensity=min(get_intensity(i,j),min_intensity);
+  for (int i = 0 ; i < x_length ; i++ ){
+    for (int j = 0 ; j < y_length ; j++ ){
+      if (min_intensity>get_intensity(j,i)){
+          min_intensity=get_intensity(j,i);
       }
     }
+  }
   return(min_intensity);
 }
 
@@ -154,7 +157,7 @@ float** Picture::get_matrix(){
   for ( int i = 0 ; i < row ; i ++ ) {
     matrix[i] = new float[col];
   }
-  for(int i = 0 ; i < row; i++ ){
+  for(int i = 0 ; i < row ; i++ ){
     for(int j = 0 ; j < col ; j++ ){
       matrix[i][j] = iitof(picture.data[i*row+j]);
     }
@@ -265,8 +268,7 @@ vector<Point> Picture::ellipse_nbh(Point p, unsigned int a, unsigned int b){
   for(unsigned int i=c1-a; i<=c1+a; i++){
     for(unsigned int j=c2-b; j<=c2+b; j++){
       if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) <= 1){
-        Point e(i,j);
-        nbh.push_back(e);
+        nbh.push_back(Point(i,j));
       }
     }
   }
