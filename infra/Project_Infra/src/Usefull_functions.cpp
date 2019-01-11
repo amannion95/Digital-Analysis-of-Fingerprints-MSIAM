@@ -1,9 +1,12 @@
 #include "Usefull_functions.h"
+
+#include <math.h>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 
 
 using namespace std;
-
+using namespace cv;
 
 float iitof(int color){
   if(color<0 || 255<color){
@@ -28,4 +31,14 @@ void display_matrix(float ** matrix,int row, int col){
     }
     cout << "\n";
   }
+}
+
+float log_coeff_isotropic(Point centre, Point p, double c){
+  float r = norm(p-centre);
+  return c * log(r+1);
+}
+
+float pow_coeff_isotropic(Point centre, Point p, int n, double c){
+  float r = norm(p-centre);
+  return c / pow(r+1, n);
 }

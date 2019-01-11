@@ -1,7 +1,7 @@
 #ifndef USEFULL_FUNCTIONS_H
 #define USEFULL_FUNCTIONS_H
 
-
+#include <opencv2/opencv.hpp>
 
 
 
@@ -20,8 +20,11 @@ display_mat : Takes a matrix, it's number of row, it's number of col and display
 ----     */
 void display_matrix(float ** matrix,int row, int col);
 
-
-
+/* ----------
+coefficient functions
+---------- */
+float log_coeff_isotropic(cv::Point p, cv::Point centre, double c);
+float pow_coeff_isotropic(cv::Point p, cv::Point centre, int n, double c);
 
 
 
