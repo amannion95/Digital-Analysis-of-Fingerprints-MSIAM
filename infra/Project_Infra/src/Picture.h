@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include "Usefull_functions.h"
 #include <algorithm>    // std::max
-#include <vector>
 
 class Picture{
 
@@ -48,16 +47,10 @@ class Picture{
     //neighbourhood functions
     std::vector<cv::Point> ellipse_nbh(cv::Point, unsigned int a, unsigned int b);
     void show_nbh(std::vector<cv::Point> nbh)const;
+
+    //testing coefficient functions
+    Picture log_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double c);
 };
-
-
-
-
-
-
-
-
-
 
 
 

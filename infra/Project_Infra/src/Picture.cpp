@@ -4,11 +4,10 @@
 #include <opencv2/opencv.hpp>
 #include <math.h>
 #include <cstdlib> // absolute value
+#include <vector>
 
 using namespace cv;
 using namespace std;
-
-
 
 Picture::Picture(const std::string& filename){
   picture=imread(filename,  IMREAD_GRAYSCALE);
@@ -54,7 +53,6 @@ void Picture::print_picture()const{
   waitKey(0);
 }
 
-
 Picture Picture::symmetry_wrt_y()const{
   Picture symmetry;
   symmetry=clone();
@@ -68,7 +66,6 @@ Picture Picture::symmetry_wrt_y()const{
   return symmetry;
 }
 
-
 Picture Picture::symmetry_wrt_x()const{
   Picture symmetry;
   symmetry=clone();
@@ -80,12 +77,11 @@ Picture Picture::symmetry_wrt_x()const{
 
   return symmetry;
 }
+
 Picture Picture::diagonal_symmetry_top_to_bottom()const{
   Picture sym(picture.t());
   return sym;
 }
-
-
 
 Picture Picture::diagonal_symmetry_bottom_to_top()const{
   Picture sym(picture.t());
@@ -129,7 +125,6 @@ Picture Picture::clone()const{
   clone.y_length=y_length;
   return clone;
 }
-
 
 unsigned int Picture::get_x_len(){
   return x_length;
@@ -241,7 +236,6 @@ void Picture::print_pression_center(int size_win_gauss=5)const{
   int x,y;
   Picture img=apply_gaussian_blur(size_win_gauss);
   Picture print(picture);
-
   img.print_picture();
   x=img.get_index_minimum_intensity().x;
   y=img.get_index_minimum_intensity().y;
@@ -260,6 +254,8 @@ Point Picture::pressure_center_gauss(){
   img=apply_gaussian_blur(31);
   return img.get_index_minimum_intensity();
 }
+
+//----------------------------------------------------------------------------
 
 vector<Point> Picture::ellipse_nbh(Point p, unsigned int a, unsigned int b){
   int c1 = p.x;
@@ -282,4 +278,15 @@ void Picture::show_nbh(vector<Point> nbh)const{
     pic_w_nbh.set_intensity(p.y, p.x, 1);
   }
   pic_w_nbh.print_picture();
+}
+
+Picture Picture::log_transform_isotropic(Point p, unsigned int a, unsigned int b, double coef){
+  Picture pressure_pic = this->clone();
+  vector<Point> nbh = ellipse_nbh(p, a, b);
+  for(Point &pixel : nbh){
+    float c = log_coeff_isotropic(pixel, p, coef);
+    float m = pressure_pic.get_intensity(pixel.y, pixel.x);
+    pressure_pic.set_intensity(pixel.y, pixel.x, c*m);
+  }
+  return pressure_pic;
 }
