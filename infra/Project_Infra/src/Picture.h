@@ -50,6 +50,7 @@ class Picture{
 
     //testing coefficient functions
     Picture log_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double c);
+    Picture pow_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double c);
 };
 
 
