@@ -1,22 +1,24 @@
 #include <stdio.h>
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <vector>
 #include "Picture.h"
+
 using namespace cv;
 using namespace std;
 
-
-
-
-
-
-
-
 int main(int argc, char** argv )
 {
+  Mat matimg = imread("../data/clean_finger.png", IMREAD_GRAYSCALE);
+  Picture img(matimg);
 
+  Point p = img.center_of_pressure();
 
+  vector<Point> v = img.ellipse_nbh(p, 40, 20);
 
+  img.show_nbh(v);
+
+  /*
   Mat image(200,200,CV_8UC1,125);
   Mat image2 = imread( "../../data/blurred_finger.png" , IMREAD_COLOR );
 

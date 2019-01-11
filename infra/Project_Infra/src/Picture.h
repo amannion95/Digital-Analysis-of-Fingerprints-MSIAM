@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "Usefull_functions.h"
 #include <algorithm>    // std::max
-
+#include <vector>
 
 class Picture{
 
@@ -36,6 +36,8 @@ class Picture{
     void rescale_color();
     float** get_matrix();
     cv::Point center_of_pressure();
+    std::vector<cv::Point> ellipse_nbh(cv::Point, unsigned int a, unsigned int b);
+    void show_nbh(std::vector<cv::Point> nbh)const;
 };
 
 

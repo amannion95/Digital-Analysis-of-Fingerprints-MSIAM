@@ -1,16 +1,19 @@
 #include "Picture.h"
 #include "Usefull_functions.h"
+#include <vector>
+#include <opencv2/opencv.hpp>
 #include <cstdlib> // absolute value
 
 using namespace cv;
-
+using namespace std;
 
 
 
 Picture::Picture(const std::string& filename){
-  picture=imread(filename);
+  picture=imread(filename,  IMREAD_GRAYSCALE);
   x_length=(picture.size()).width;
   y_length=(picture.size()).height;
+
 }
 
 Picture::Picture(unsigned int x_length,unsigned int y_length){
@@ -22,8 +25,10 @@ Picture::Picture(unsigned int x_length,unsigned int y_length){
 
 Picture::Picture(const cv::Mat& pic){
   picture=pic.clone();
-  x_length=(picture.size()).width;
-  y_length=(picture.size()).height;
+  //x_length=(picture.size()).width;
+  //y_length=(picture.size()).height;
+  x_length = pic.cols;
+  y_length = pic.rows;
 }
 
 Picture::Picture(){
@@ -201,4 +206,29 @@ Point_<int> Picture::center_of_pressure(){
   }
   Point p(x_coordinate,y_coordinate);
   return p;
+}
+
+vector<Point> Picture::ellipse_nbh(Point p, unsigned int a, unsigned int b){
+  int c1 = p.x;
+  int c2 = p.y;
+  vector<Point> nbh;
+  for(unsigned int i=c1-a; i<=c1+a; i++){
+    for(unsigned int j=c2-b; j<=c2+b; j++){
+      if((i-c1)^2/(a^2) + (j-c2)^2/(b^2) <= 1){
+        Point e(i,j);
+        nbh.push_back(e);
+      }
+    }
+  }
+  return nbh;
+}
+
+void Picture::show_nbh(vector<Point> nbh)const{
+  Picture pic_w_nbh;
+  pic_w_nbh = this->clone();
+  for(Point &p : nbh){
+    pic_w_nbh.set_intensity(p.y, p.x, 1);
+  }
+  namedWindow("Image with pressure neighbourhood", WINDOW_AUTOSIZE);
+  pic_w_nbh.print_picture();
 }
