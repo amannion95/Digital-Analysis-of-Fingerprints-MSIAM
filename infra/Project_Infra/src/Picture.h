@@ -43,7 +43,7 @@ class Picture{
     cv::Point get_index_minimum_intensity()const;
 
     void print_pression_center(int size_win_gauss)const;
-
+    cv::Point pressure_center_gauss();
 };
 
 

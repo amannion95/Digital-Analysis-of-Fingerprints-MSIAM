@@ -251,3 +251,8 @@ void Picture::print_pression_center(int size_win_gauss=5)const{
   img.print_picture();
   print.print_picture();
 }
+
+Point Picture::pressure_center_gauss(){
+  Picture img=apply_gaussian_blur(31);
+  return img.get_index_minimum_intensity();
+}
