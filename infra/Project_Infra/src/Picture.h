@@ -38,6 +38,13 @@ class Picture{
     cv::Point center_of_pressure();
     std::vector<cv::Point> ellipse_nbh(cv::Point, unsigned int a, unsigned int b);
     void show_nbh(std::vector<cv::Point> nbh)const;
+
+    Picture apply_gaussian_blur(int win_size)const;
+    cv::Point get_index_maximum_intensity()const;
+    cv::Point get_index_minimum_intensity()const;
+
+    void print_pression_center(int size_win_gauss)const;
+    cv::Point pressure_center_gauss();
 };
 
 

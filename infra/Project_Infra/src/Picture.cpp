@@ -2,6 +2,7 @@
 #include "Usefull_functions.h"
 #include <vector>
 #include <opencv2/opencv.hpp>
+#include <math.h>
 #include <cstdlib> // absolute value
 
 using namespace cv;
@@ -25,10 +26,8 @@ Picture::Picture(unsigned int x_length,unsigned int y_length){
 
 Picture::Picture(const cv::Mat& pic){
   picture=pic.clone();
-  //x_length=(picture.size()).width;
-  //y_length=(picture.size()).height;
-  x_length = pic.cols;
-  y_length = pic.rows;
+  x_length=(picture.size()).width;
+  y_length=(picture.size()).height;
 }
 
 Picture::Picture(){
@@ -208,13 +207,64 @@ Point_<int> Picture::center_of_pressure(){
   return p;
 }
 
+//-----------------------------------------------------------
+//add by tristan 10th jan
+
+//win_size must be odd ! Apply gaussian filter to the picture
+Picture Picture::apply_gaussian_blur(int win_size=5)const{
+  Mat blured_picture;
+  GaussianBlur(picture,blured_picture,Size(win_size,win_size),0,0);
+  Picture blured_Pic(blured_picture);
+  return blured_Pic;
+}
+
+Point Picture::get_index_maximum_intensity()const{
+  Point coord_min(0,0);
+  Point coord_max(0,0);
+  double x,y;
+  minMaxLoc(picture, &x, &y, &coord_min, &coord_max);
+  return coord_max;
+}
+
+Point Picture::get_index_minimum_intensity()const{
+  Point coord_min(0,0);
+  Point coord_max(0,0);
+  double x,y;
+  minMaxLoc(picture, &x, &y, &coord_min, &coord_max);
+  return coord_min;
+}
+
+void Picture::print_pression_center(int size_win_gauss=5)const{
+  int x,y;
+  Picture img=apply_gaussian_blur(size_win_gauss);
+  Picture print(picture);
+
+  img.print_picture();
+  x=img.get_index_minimum_intensity().x;
+  y=img.get_index_minimum_intensity().y;
+  for (int i=x-10;i<x+10;i++){
+    for(int j=y-10;j<y+10;j++){
+      img.set_intensity(j,i,0.7);
+      print.set_intensity(j,i,0.7);
+    }
+  }
+  img.print_picture();
+  print.print_picture();
+}
+
+Point Picture::pressure_center_gauss(){
+  Picture img;
+  img=apply_gaussian_blur(31);
+  return img.get_index_minimum_intensity();
+}
+
 vector<Point> Picture::ellipse_nbh(Point p, unsigned int a, unsigned int b){
   int c1 = p.x;
   int c2 = p.y;
   vector<Point> nbh;
   for(unsigned int i=c1-a; i<=c1+a; i++){
     for(unsigned int j=c2-b; j<=c2+b; j++){
-      if((i-c1)^2/(a^2) + (j-c2)^2/(b^2) <= 1){
+      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) <= 1){
         Point e(i,j);
         nbh.push_back(e);
       }
@@ -229,6 +279,5 @@ void Picture::show_nbh(vector<Point> nbh)const{
   for(Point &p : nbh){
     pic_w_nbh.set_intensity(p.y, p.x, 1);
   }
-  namedWindow("Image with pressure neighbourhood", WINDOW_AUTOSIZE);
   pic_w_nbh.print_picture();
 }
