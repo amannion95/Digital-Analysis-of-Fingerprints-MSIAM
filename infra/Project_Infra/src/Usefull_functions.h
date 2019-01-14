@@ -24,8 +24,8 @@ void display_matrix(float ** matrix,int row, int col);
 coefficient functions
 ---------- */
 float log_coeff_isotropic(cv::Point p, cv::Point centre, double c);
-float pow_coeff_isotropic(cv::Point p, cv::Point centre, int n, double c);
-
+//float pow_coeff_isotropic(cv::Point p, cv::Point centre, int n, float c);
+float intensity_sym(float i);
 
 
 

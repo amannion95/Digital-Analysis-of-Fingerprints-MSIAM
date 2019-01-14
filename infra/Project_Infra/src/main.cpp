@@ -12,12 +12,12 @@ int main(int argc, char** argv )
   Mat image =  imread("../../data/clean_finger.png", IMREAD_GRAYSCALE);
 
   Picture img(image);
-  Point p = img.pressure_center_gauss();
+  Point p = img.center_of_pressure();
 
   vector<Point> v = img.ellipse_nbh(p, 30, 50);
   img.show_nbh(v);
 
-  Picture pimg = img.log_transform_isotropic(p, 30, 50, 0.1);
+  Picture pimg = img.pow_transform_isotropic(p, 30, 50, 2);
 
   pimg.print_picture();
   /*
