@@ -161,17 +161,6 @@ float** Picture::get_matrix(){
 }
 
 Point_<int> Picture::center_of_pressure(){
-  float threshold = 0.1;
-  Picture pressure_pic = this->clone();
-  vector<Point> point_threshold;
-  for(int i = 0 ; i < x_length ; i++){
-  for(int j = 0; j< y_length ; j++){
-    if(pressure_pic.get_intensity(j,i)>=threshold){
-      pressure_pic.set_intensity(j,i,1);
-    }
-    else{
-      //cout << get_intensity(j,i) << "    " ;
-      point_threshold.push_back(Point(i,j));
   float threshold=0.1;
   Picture pressure_pic = this->clone();
   vector<Point> point_threshold;
@@ -187,8 +176,8 @@ Point_<int> Picture::center_of_pressure(){
     }
   }
   vector<float> distance;
-  float min_distance = 0;
-  int index;
+  float min_distance=0;
+  int indice;
   for(int i=0;i<point_threshold.size();i++){
     distance.push_back(0);
     for(int j=0;j<point_threshold.size();j++){
@@ -198,11 +187,11 @@ Point_<int> Picture::center_of_pressure(){
       min_distance=distance[i];
     }
     else if(min(min_distance,distance[i])==distance[i]){
-      index=i;
+      indice=i;
       min_distance=distance[i];
     }
   }
-return(point_threshold[index]);
+return(point_threshold[indice]);
 }
 
 //-----------------------------------------------------------
@@ -280,8 +269,7 @@ void Picture::show_nbh(vector<Point> nbh)const{
   pic_w_nbh.print_picture();
 }
 
-Picture Picture::log_transform_isotropic(Point p, unsigned int a, unsigned int b,
-  double coef){
+Picture Picture::log_transform_isotropic(Point p, unsigned int a, unsigned int b, double coef){
   Picture pressure_pic = this->clone();
   vector<Point> nbh = ellipse_nbh(p, a, b);
   for(Point &pixel : nbh){
@@ -292,14 +280,107 @@ Picture Picture::log_transform_isotropic(Point p, unsigned int a, unsigned int b
   return pressure_pic;
 }
 
-Picture Picture::pow_transform_isotropic(Point p, unsigned int a, unsigned int b,
-  double n){
+Picture Picture::pow_transform_isotropic(Point p, unsigned int a, unsigned int b, double coef){
   Picture pressure_pic = this->clone();
   vector<Point> nbh = ellipse_nbh(p, a, b);
   for(Point &pixel : nbh){
-    float r = norm(p-pixel)/max(a,b);
+    float r = norm(p-pixel)/(max(a,b));
     float m = pressure_pic.get_intensity(pixel.y, pixel.x);
-    pressure_pic.set_intensity(pixel.y, pixel.x, pow(r,n)*m);
+    pressure_pic.set_intensity(pixel.y, pixel.x, sqrt(r)*m);
   }
   return pressure_pic;
 }
+
+//----------------------------------------------------
+
+
+Picture Picture::extract_ellipse_pic(Point center, unsigned int a,unsigned int b){
+  int c1=center.x;
+  int c2=center.y;
+
+  Picture extraction=clone();
+  for(int i=0;i<x_length;i++){
+    for(int j=0;j<y_length;j++){
+      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) > 1){
+        extraction.set_intensity(j,i,1);
+      }
+    }
+  }
+  return extraction;
+}
+
+
+Picture Picture::apply_threshold(float set_lim){
+  Picture th_ed = clone();
+  for(int i =0; i<x_length; i++){
+    for(int j =0; j<y_length; j++){
+      if(get_intensity(j,i)>set_lim){
+        th_ed.set_intensity(j,i,1);
+      }
+      else{
+        th_ed.set_intensity(j,i,0);
+      }
+    }
+  }
+  return th_ed;
+}
+
+
+vector<Point> Picture::get_0intensity_index (){
+  vector<Point> contain;
+  for(int i=0;i<x_length;i++){
+    for (int j=0;j<y_length;j++){
+      if (get_intensity(j,i)==0){
+        Point p(j,i);
+        contain.push_back(p);
+      }
+    }
+  }
+  return contain;
+}
+
+Point Picture::get_median_center(vector<Point> intensity_index){
+  vector<int> x_index;
+  vector<int> y_index;
+  Point coord(0,0);
+
+  for (vector<Point>::iterator i = intensity_index.begin() ; i != intensity_index.end(); i++){
+    x_index.push_back(i->x);
+    y_index.push_back(i->y);
+  }
+
+
+  sort(x_index.begin(),x_index.end());
+  sort(y_index.begin(),y_index.end());
+
+  if (intensity_index.size()==0){
+    cerr<<"Empty vector do not have any median value."<<endl;
+    return coord;
+  }
+  coord.x=x_index[intensity_index.size() / 2];
+  coord.y=y_index[intensity_index.size() / 2];
+  return coord;
+}
+
+//BAD RESULTS, NOT USABLE
+void Picture::print_median_center(int thresh=0.01){
+  int x,y;
+  Picture img=apply_threshold(thresh);
+  Picture print(picture);
+  Point* p=new Point(img.get_median_center(img.get_0intensity_index()));
+  x=p->x;
+  y=p->y;
+
+  for (int i=x-10;i<x+10;i++){
+    for(int j=y-10;j<y+10;j++){
+      img.set_intensity(j,i,0.7);
+      print.set_intensity(j,i,0.7);
+    }
+  }
+  delete p;
+  img.print_picture();
+  print.print_picture();
+
+}
+
+

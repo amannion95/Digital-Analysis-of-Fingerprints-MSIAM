@@ -50,8 +50,19 @@ class Picture{
 
     //testing coefficient functions
     Picture log_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double c);
-    Picture pow_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double n);
+    Picture pow_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double c);
 
+
+    //find pressure center (threshold + gaussian)
+    Picture apply_threshold(float set_lim);
+    std::vector<cv::Point> get_0intensity_index ();
+    cv::Point get_median_center(std::vector<cv::Point> intensity_index);
+    void print_median_center(int thresh);
+   
+
+
+   //return the ellipse 
+   Picture extract_ellipse_pic(cv::Point center, unsigned int a,unsigned int b);
 };
 
 
