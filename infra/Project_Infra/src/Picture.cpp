@@ -5,6 +5,7 @@
 #include <math.h>
 #include <cstdlib> // absolute value
 #include <vector>
+#include <algorithm>
 
 using namespace cv;
 using namespace std;
@@ -301,7 +302,7 @@ Picture Picture::extract_ellipse_pic(Point center, unsigned int a,unsigned int b
   Picture extraction=clone();
   for(int i=0;i<x_length;i++){
     for(int j=0;j<y_length;j++){
-      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) > 1){
+      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) == 1){
         extraction.set_intensity(j,i,1);
       }
     }
@@ -383,8 +384,8 @@ void Picture::print_median_center(int thresh=0.01){
 
 }
 
-
-Picture Picture::try_apply_isotrop(cv::Point center,unsigned int a,unsigned int b){
+//ellipse. we have to add gaussian random law.
+Picture Picture::try_apply_anisotrop(cv::Point center,unsigned int a,unsigned int b){
 
   Picture extrac_smoothed;
   Point p(0,0);
@@ -392,12 +393,70 @@ Picture Picture::try_apply_isotrop(cv::Point center,unsigned int a,unsigned int 
   float distance;
   for(int i=0;i<extrac_smoothed.x_length;i++){
     for (int j=0;j<extrac_smoothed.y_length;j++){
-      if (extrac_smoothed.get_intensity(j,i)!=1)
+      if (extrac_smoothed.get_intensity(j,i)!=1){
         p.y=j;
         p.x=i;
         distance=norm(center-p);
         extrac_smoothed.set_intensity(j,i,fct_c_test(distance)*extrac_smoothed.get_intensity(j,i));
+      }
     }
   }
   return extrac_smoothed.extract_ellipse_pic(center,a,b);
+}
+
+// -----------------------------------------------------------------------------------
+void Picture::SAVE_PIC(string name){
+  imwrite(name, picture);
+}
+
+//winsize must be odd : filter
+
+Picture Picture::accentuation_diff(int winsize ){
+  float mean;
+  Picture filtered=clone();
+  int semi_size=(winsize-1)/2;
+  vector<float> conteneur;
+  for(int i=0;i<x_length-semi_size;i++){
+    for(int j=0;j<y_length-semi_size;j++){
+      for(int u=-semi_size;u<=semi_size;u++){
+        for(int v=-semi_size;v<semi_size;v++){
+          if ((u!=0) || (v!=0 )){
+            conteneur.push_back(get_intensity(j,i)-get_intensity(v,u));
+          }
+        }
+      }
+
+      for(std::vector<float>::iterator it = conteneur.begin(); it != conteneur.end(); ++it){
+        mean += *it;
+      }
+      mean=mean/conteneur.size();
+      cout<<"taille : "<<conteneur.size()<<endl;
+      if (get_intensity(j,i)+mean>1){
+        filtered.set_intensity(j,i,1);
+      }
+      else if ((get_intensity(j,i)+mean)<0){
+        filtered.set_intensity(j,i,0);
+
+      }
+      else{
+        filtered.set_intensity(j,i,get_intensity(j,i)+mean);
+      }
+      conteneur.clear();
+    }
+  }
+  return filtered;
+}
+
+
+
+Picture Picture::without_noise(){
+  Picture filtered=clone();
+
+  for(int i=0;i<x_length;i++){
+    for(int j=0;j<y_length;j++){
+      filtered.set_intensity(j,i,min((float)(1+pow(get_intensity(j,i),1))*get_intensity(j,i),(float)1));
+
+    }
+  }
+  return filtered;
 }

@@ -67,8 +67,10 @@ class Picture{
 
    //---------------------------test--------------------------
 
-   Picture try_apply_isotrop(cv::Point center,unsigned int a,unsigned int b);
-   
+   Picture try_apply_anisotrop(cv::Point center,unsigned int a,unsigned int b);
+   void SAVE_PIC(std::string name);
+   Picture without_noise();
+   Picture accentuation_diff(int winsize );
 
 };
 
