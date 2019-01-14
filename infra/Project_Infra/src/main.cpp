@@ -9,15 +9,17 @@ using namespace std;
 
 int main(int argc, char** argv )
 {
-  Mat matimg = imread("../data/clean_finger.png", IMREAD_GRAYSCALE);
-  Picture img(matimg);
+  Mat image =  imread("../../data/clean_finger.png", IMREAD_GRAYSCALE);
 
-  Point p = img.center_of_pressure();
+  Picture img(image);
+  Point p = img.pressure_center_gauss();
 
-  vector<Point> v = img.ellipse_nbh(p, 40, 20);
-
+  vector<Point> v = img.ellipse_nbh(p, 30, 50);
   img.show_nbh(v);
 
+  Picture pimg = img.log_transform_isotropic(p, 30, 50, 0.1);
+
+  pimg.print_picture();
   /*
   Mat image(200,200,CV_8UC1,125);
   Mat image2 = imread( "../../data/blurred_finger.png" , IMREAD_COLOR );

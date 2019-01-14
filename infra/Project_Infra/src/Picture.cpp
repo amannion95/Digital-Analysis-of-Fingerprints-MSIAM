@@ -161,48 +161,37 @@ float** Picture::get_matrix(){
 }
 
 Point_<int> Picture::center_of_pressure(){
+  float threshold = 0.1;
+  Picture pressure_pic = this->clone();
+  vector<Point> point_threshold;
   for(int i = 0 ; i < x_length ; i++){
-    for(int j = 0; j< y_length ; j++){
-      if(get_intensity(i,j)>=0.2){
-        set_intensity(i,j,0);
+  for(int j = 0; j< y_length ; j++){
+    if(pressure_pic.get_intensity(j,i)>=threshold){
+      pressure_pic.set_intensity(j,i,1);
+    }
+    else{
+      //cout << get_intensity(j,i) << "    " ;
+      point_threshold.push_back(Point(i,j));
       }
     }
   }
-  float** min_distance_to_others;
-  int row=x_length;
-  int col=y_length;
-  int nb_pts_unchanged=0;
-  float **distance_to_others = new float*[row];
-  for ( int i = 0 ; i < row ; i ++ ) {
-    distance_to_others[i] = new float[col];
-  }
-  for(int i=0;i<x_length;i++){
-    for(int j=0;j<y_length;j++){
-      for (int ii=0;ii<x_length;ii++){
-        for (int jj=0;jj<y_length;jj++){
-          if(get_intensity(ii,jj)!=0 || (ii!=i && jj!=j) ){
-            distance_to_others[i][j]=distance_to_others[i][j]+(abs(ii-i)+abs(jj-j));
-            nb_pts_unchanged++;
-          }
-        }
-      }
-      distance_to_others[i][j]=distance_to_others[i][j]/(nb_pts_unchanged-1) ;
+  vector<float> distance;
+  float min_distance = 0;
+  int index;
+  for(int i=0;i<point_threshold.size();i++){
+    distance.push_back(0);
+    for(int j=0;j<point_threshold.size();j++){
+      distance[i]=distance[i]+float(norm(point_threshold[i]-point_threshold[j]));
+    }
+    if(i==0){
+      min_distance=distance[i];
+    }
+    else if(min(min_distance,distance[i])==distance[i]){
+      index=i;
+      min_distance=distance[i];
     }
   }
-  int x_coordinate;
-  int y_coordinate;
-  float min_distance=distance_to_others[0][0];
-  for (int i=0;i<x_length;i++){
-    for (int j=0;j<y_length;j++){
-      if(min_distance>distance_to_others[i][j]){
-        x_coordinate=i;
-        y_coordinate=j;
-        min_distance=distance_to_others[i][j];
-      }
-    }
-  }
-  Point p(x_coordinate,y_coordinate);
-  return p;
+return(point_threshold[index]);
 }
 
 //-----------------------------------------------------------
@@ -280,13 +269,26 @@ void Picture::show_nbh(vector<Point> nbh)const{
   pic_w_nbh.print_picture();
 }
 
-Picture Picture::log_transform_isotropic(Point p, unsigned int a, unsigned int b, double coef){
+Picture Picture::log_transform_isotropic(Point p, unsigned int a, unsigned int b,
+  double coef){
   Picture pressure_pic = this->clone();
   vector<Point> nbh = ellipse_nbh(p, a, b);
   for(Point &pixel : nbh){
     float c = log_coeff_isotropic(pixel, p, coef);
     float m = pressure_pic.get_intensity(pixel.y, pixel.x);
     pressure_pic.set_intensity(pixel.y, pixel.x, c*m);
+  }
+  return pressure_pic;
+}
+
+Picture Picture::pow_transform_isotropic(Point p, unsigned int a, unsigned int b,
+  double n){
+  Picture pressure_pic = this->clone();
+  vector<Point> nbh = ellipse_nbh(p, a, b);
+  for(Point &pixel : nbh){
+    float r = norm(p-pixel)/max(a,b);
+    float m = pressure_pic.get_intensity(pixel.y, pixel.x);
+    pressure_pic.set_intensity(pixel.y, pixel.x, pow(r,n)*m);
   }
   return pressure_pic;
 }
