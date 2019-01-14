@@ -172,6 +172,17 @@ Point_<int> Picture::center_of_pressure(){
     else{
       //cout << get_intensity(j,i) << "    " ;
       point_threshold.push_back(Point(i,j));
+  float threshold=0.1;
+  Picture pressure_pic = this->clone();
+  vector<Point> point_threshold;
+  for(int i = 0 ; i < x_length ; i++){
+    for(int j = 0; j< y_length ; j++){
+      if(pressure_pic.get_intensity(j,i)>=threshold){
+        pressure_pic.set_intensity(j,i,1);
+      }
+      else{
+        //cout << get_intensity(j,i) << "    " ;
+        point_threshold.push_back(Point(i,j));
       }
     }
   }
