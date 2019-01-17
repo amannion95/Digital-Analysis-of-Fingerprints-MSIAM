@@ -119,6 +119,12 @@ class Picture{
     Picture cast_rotation_polar(cv::Point centre, double angle);
     Picture nn_rotation_polar(cv::Point centre, double angle);
     Picture bilinear_rotation_polar(cv::Point centre, double angle);
+  
+//--------------------------------PART1---MAX--------------------------------
+
+    std::vector<cv::Point> weak_pressure_border(cv::Point, unsigned int a, unsigned int b);
+    std::vector<cv::Point> weak_pressure_area(std::vector<cv::Point> border, cv::Point center, unsigned int a, unsigned int b );
+    Picture attenuation_weak_area(std::vector<cv::Point> area, cv::Point center, unsigned int a, unsigned int b);  
 
 };
 
