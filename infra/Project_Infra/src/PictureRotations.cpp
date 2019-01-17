@@ -156,15 +156,3 @@ Picture Picture::bilinear_rotation_polar(Point centre, double angle){
   }
   return rotated_pic;
 }
-
-vector<Point2d> rotated_pixels(Point centre, double angle){
-  vector<Point2d> co_ords;
-  for(unsigned int i = 0; i < get_x_len(); i++){
-    for(unsigned int j = 0; j < get_y_len(); j++){
-      Point2d r = rotation(Point(i,j), centre, angle);
-      co_ords.push_back(r);
-    }
-  }
-  cout << "pixels rotated" << endl;
-  return co_ords;
-}
