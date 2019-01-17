@@ -1,0 +1,29 @@
+3 differents ways to translate picture :\\
+
+	- moove each pixels one by one\\
+	- scrop the zone which will still be in the picture after translation and paste it in a white picture\\
+	- use the openCV function "warpAffine" with the right parameters which allow us to translate with floating parameters.\\
+	
+	
+
+Many different ways to estimate the translation parameters $p_x$ and _$p_y$ assuming that they are discrete values. There is two of them :\\
+
+	- The greedy one : go through the whole picture and try each translation combinations and, for all of these, compute the error.\\
+	
+	
+
+	- A better one is locate the barycenter of both pictures, compare them and find two intervals (one for $p_x$ and one for_$p_y$). You will then be able to use the bruteforce algorithm described previously but only on these intervals.\\
+	
+	
+/!\ insert picture here(the graphs)
+
+
+
+\\
+
+The absolute error picture show us that the translation parameter is not an integer.\\
+
+/!\ insert picture here( abs error int _int)
+
+We have an approximation of the parameters. We looked for an algorithm which would be able to refine these ones.\\
+In order to do that we find the point with the lowest error by adding k*0.1 to  $p_x^{*}$ and $p_y^{*}$ (k $\in [-10,10]$). this become the new ($p_x^{*},p_y^{*}$). Then we redo this with k*0.01 etc..
