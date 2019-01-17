@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include <opencv2/opencv.hpp>
 #include <math.h>
 #include <cstdlib> // absolute value
 #include <algorithm>
