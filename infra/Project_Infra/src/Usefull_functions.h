@@ -4,6 +4,7 @@
 #include <opencv2/opencv.hpp>
 
 
+
 /*  ------
 iitof : Takes color intensity as an int between [0,255] and converts it into a float between [0,1]
 ----     */
@@ -24,7 +25,16 @@ coefficient functions
 ---------- */
 float log_coeff_isotropic(cv::Point p, cv::Point centre, double c);
 //float pow_coeff_isotropic(cv::Point p, cv::Point centre, int n, float c);
-//float intensity_sym(float i);
+
+// --------------------- PART 1 Max -------------------//
+cv::Point rotation_ij(cv::Point a ,float rotation);
+float fct_c_test(float x);
+std::vector<cv::Point> segment(cv::Point a, cv::Point b);
+bool compare_polar_cord(cv::Point2f a, cv::Point2f b);
+bool compare_y_cord(cv::Point a, cv::Point b);
+
+
+
 
 
 
