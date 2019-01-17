@@ -37,11 +37,63 @@ float log_coeff_isotropic(Point centre, Point p, double c){
   return c * log(1+r);
 }
 
+Point rotation_ij(Point a ,float rotation){
+  a.x=a.x*cos(rotation)-a.y*sin(rotation);
+  a.y=a.x*sin(rotation)+a.y*cos(rotation);
+  cout << " a = " << a;
+  return a;
+}
+
+float fct_c_test(float x){
+  return 300./(300.+x);
+  //return 1/(log(exp(1)+0.0000001*x));
+  //return pow(1.000000001,-x);
+}
+
+vector<Point> segment(Point p0, Point p1){
+  int dx = p1.x-p0.x;
+  int dy = p1.y-p0.y;
+  int nx = abs(dx);
+  int ny = abs(dy);
+  int sign_x = dx > 0? 1 : -1;
+  int sign_y = dy > 0? 1 : -1;
+  Point p(p0.x,p0.y);
+  vector<Point> line;
+  line.push_back(p);
+  //cout << "nx = " << nx << " ny = " << ny;
+  for(int ix =0, iy=0; ix<nx || iy < ny;){
+    if((0.5+ix)/nx <= (0.5+iy)/ny){
+      // the step is horizontal
+      p.x +=sign_x;
+      ix++;
+    }
+    else{
+      // the step is vertical
+      p.y+=sign_y;
+      iy++;
+    }
+    line.push_back(Point(int(p.x),int(p.y)));
+  }
+  return line;
+}
+
+bool compare_polar_cord(Point2f a, Point2f b){
+  return(a.y<b.y);
+}
+
+bool compare_y_cord(Point a, Point b){
+  if(a.y != b.y){
+    return(a.y<b.y);
+  }
+  else{
+    return(a.x<b.x);
+  }
+}
+
 /*float pow_coeff_isotropic(Point centre, Point p, int n, float c){
   float r = norm(p-centre);
   return c * (pow(r,n) + 1);
 }
-
 float intensity_sym(float i){
   assert(i <= 1);
   if((i-0.5) < 0){
