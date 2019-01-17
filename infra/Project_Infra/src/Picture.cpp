@@ -9,6 +9,8 @@
 using namespace cv;
 using namespace std;
 
+RNG rng(0);
+
 Picture::Picture(const std::string& filename){
   picture=imread(filename,  IMREAD_GRAYSCALE);
   x_length=(picture.size()).width;
