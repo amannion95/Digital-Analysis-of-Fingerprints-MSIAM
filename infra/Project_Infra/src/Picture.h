@@ -110,6 +110,15 @@ class Picture{
    cv::Point2f find_opti_px_py(cv::Point_<float> aproxim,Picture &translated);
    Picture translation_opti_int_xy(int x,int y);
 };
+//--------------------------------ROTATION PART-----------------------------
+    std::vector<cv::Point2d> rotated_pixels(cv::Point centre, double angle);
+    std::vector<cv::Point> original_coordt(float o);
+    std::vector<cv::Point_<float>> list_send_point(float o);
+    Picture bilinear_interpolation_cart( double o);
+    Picture cast_rotation_cart(Point centre,float o);
+    Picture cast_rotation_polar(cv::Point centre, double angle);
+    Picture nn_rotation_polar(cv::Point centre, double angle);
+    Picture bilinear_rotation_polar(cv::Point centre, double angle);
 
 
 
