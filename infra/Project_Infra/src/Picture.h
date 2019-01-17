@@ -1,11 +1,15 @@
 #ifndef PICTURE_H
 #define PICTURE_H
 
-#include <stdio.h>
-#include <opencv2/opencv.hpp>
-#include <stdlib.h>
 #include "Usefull_functions.h"
-#include <algorithm>    // std::max
+#include <opencv2/opencv.hpp>
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include <opencv2/opencv.hpp>
+#include <math.h>
+#include <cstdlib> // absolute value
+#include <algorithm>
 
 class Picture{
 

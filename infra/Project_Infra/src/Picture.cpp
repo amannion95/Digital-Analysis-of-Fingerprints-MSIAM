@@ -1,10 +1,6 @@
 #include "Picture.h"
 #include "Usefull_functions.h"
-#include <vector>
-#include <opencv2/opencv.hpp>
-#include <math.h>
-#include <cstdlib> // absolute value
-#include <algorithm>
+
 
 using namespace cv;
 using namespace std;
@@ -15,7 +11,6 @@ Picture::Picture(const std::string& filename){
   picture=imread(filename,  IMREAD_GRAYSCALE);
   x_length=(picture.size()).width;
   y_length=(picture.size()).height;
-
 }
 
 Picture::Picture(unsigned int x_length,unsigned int y_length){
@@ -55,39 +50,8 @@ void Picture::print_picture()const{
   waitKey(0);
 }
 
-Picture Picture::symmetry_wrt_y()const{
-  Picture symmetry;
-  symmetry=clone();
-  std::cout<<symmetry.x_length<<std::endl;
-  for(int j=0;j<y_length;j++){
-    for(int i=0;i<x_length;i++){
-      symmetry.set_intensity(j,x_length-1-i,get_intensity(j,i));
-    }
-  }
-
-  return symmetry;
-}
-
-Picture Picture::symmetry_wrt_x()const{
-  Picture symmetry;
-  symmetry=clone();
-  for(int j=0;j<y_length;j++){
-    for(int i=0;i<x_length;i++){
-      symmetry.set_intensity(y_length-1-j,i,get_intensity(j,i));
-    }
-  }
-
-  return symmetry;
-}
-
-Picture Picture::diagonal_symmetry_top_to_bottom()const{
-  Picture sym(picture.t());
-  return sym;
-}
-
-Picture Picture::diagonal_symmetry_bottom_to_top()const{
-  Picture sym(picture.t());
-  return sym.symmetry_wrt_y().symmetry_wrt_x();
+void Picture::SAVE_PIC(string name){
+  imwrite(name, picture);
 }
 
 void Picture::operator=(Picture Pic){
@@ -172,7 +136,6 @@ Point Picture::center_of_pressure(){
         pressure_pic.set_intensity(j,i,1);
       }
       else{
-        //cout << get_intensity(jmin(min_distance,distance[i])==min(min_distance,distance[i])==,i) << "    " ;
         point_threshold.push_back(Point(i,j));
       }
     }
@@ -196,9 +159,6 @@ Point Picture::center_of_pressure(){
   return(point_threshold[indice]);
 }
 
-//-----------------------------------------------------------
-//add by tristan 10th jan
-
 //win_size must be odd ! Apply gaussian filter to the picture
 Picture Picture::apply_gaussian_blur(int win_size=5)const{
   Mat blured_picture;
@@ -206,7 +166,6 @@ Picture Picture::apply_gaussian_blur(int win_size=5)const{
   Picture blured_Pic(blured_picture);
   return blured_Pic;
 }
-
 
 Point Picture::get_index_minimum_intensity()const{
   Point coord_min(0,0);
@@ -238,72 +197,6 @@ Point Picture::pressure_center_gauss_threshold(){
   return img.get_index_minimum_intensity();
 }
 
-//----------------------------------------------------------------------------
-
-vector<Point> Picture::ellipse_nbh(Point p, unsigned int a, unsigned int b){
-  int c1 = p.x;
-  int c2 = p.y;
-  vector<Point> nbh;
-  for(unsigned int i=c1-a; i<=c1+a; i++){
-    for(unsigned int j=c2-b; j<=c2+b; j++){
-      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) <= 1){
-        nbh.push_back(Point(i,j));
-      }
-    }
-  }
-  return nbh;
-}
-
-void Picture::show_nbh(vector<Point> nbh)const{
-  Picture pic_w_nbh;
-  pic_w_nbh = this->clone();
-  for(Point &p : nbh){
-    pic_w_nbh.set_intensity(p.y, p.x, 1);
-  }
-  pic_w_nbh.print_picture();
-}
-
-Picture Picture::log_transform_isotropic(Point p, unsigned int a, unsigned int b, double coef){
-  Picture pressure_pic = this->clone();
-  vector<Point> nbh = ellipse_nbh(p, a, b);
-  for(Point &pixel : nbh){
-    float c = log_coeff_isotropic(pixel, p, coef);
-    float m = pressure_pic.get_intensity(pixel.y, pixel.x);
-    pressure_pic.set_intensity(pixel.y, pixel.x, c*m);
-  }
-  return pressure_pic;
-}
-
-Picture Picture::pow_transform_isotropic(Point p, unsigned int a, unsigned int b, double coef){
-  Picture pressure_pic = this->clone();
-  vector<Point> nbh = ellipse_nbh(p, a, b);
-  for(Point &pixel : nbh){
-    float r = norm(p-pixel)/(max(a,b));
-    float m = pressure_pic.get_intensity(pixel.y, pixel.x);
-    pressure_pic.set_intensity(pixel.y, pixel.x, sqrt(r)*m);
-  }
-  return pressure_pic;
-}
-
-//----------------------------------------------------
-
-
-Picture Picture::extract_ellipse_pic(Point center, unsigned int a,unsigned int b){
-  int c1=center.x;
-  int c2=center.y;
-
-  Picture extraction=clone();
-  for(int i=0;i<x_length;i++){
-    for(int j=0;j<y_length;j++){
-      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) >= 1){
-        extraction.set_intensity(j,i,1);
-      }
-    }
-  }
-  return extraction;
-}
-
-
 Picture Picture::apply_threshold(float set_lim){
   Picture th_ed = clone();
   for(int i =0; i<x_length; i++){
@@ -317,96 +210,4 @@ Picture Picture::apply_threshold(float set_lim){
     }
   }
   return th_ed;
-}
-
-
-vector<Point> Picture::get_0intensity_index (){
-  vector<Point> contain;
-  for(int i=0;i<x_length;i++){
-    for (int j=0;j<y_length;j++){
-      if (get_intensity(j,i)==0){
-        Point p(j,i);
-        contain.push_back(p);
-      }
-    }
-  }
-  return contain;
-}
-
-
-//ellipse. we have to add gaussian random law.
-Picture Picture::apply_anisotrope(cv::Point center,unsigned int a,unsigned int b){
-  Picture extrac_smoothed=extract_ellipse_pic(center,a,b);
-
-  float distance;
-  for(int i=0;i<extrac_smoothed.x_length;i++){
-    for (int j=0;j<extrac_smoothed.y_length;j++){
-      if (extrac_smoothed.get_intensity(j,i)!=1){
-        Point p(i,j);
-        distance=norm(center-p);
-        extrac_smoothed.set_intensity(j,i,fct_c_test(distance)*extrac_smoothed.get_intensity(j,i));
-      }
-    }
-  }
-  return extrac_smoothed.extract_ellipse_pic(center,a,b);
-}
-
-
-
-
-
-// -----------------------------------------------------------------------------------
-void Picture::SAVE_PIC(string name){
-  imwrite(name, picture);
-}
-
-//winsize must be odd : filter
-
-Picture Picture::accentuation_diff(int winsize ){
-  float mean;
-  Picture filtered=clone();
-  int semi_size=(winsize-1)/2;
-  vector<float> conteneur;
-  for(int i=0;i<x_length-semi_size;i++){
-    for(int j=0;j<y_length-semi_size;j++){
-      for(int u=-semi_size;u<=semi_size;u++){
-        for(int v=-semi_size;v<=semi_size;v++){
-          if ((u!=0) || (v!=0 )){
-            conteneur.push_back(get_intensity(j,i)-get_intensity(v,u));
-          }
-        }
-      }
-
-      for(std::vector<float>::iterator it = conteneur.begin(); it != conteneur.end(); ++it){
-        mean += *it;
-      }
-      mean=mean/conteneur.size();
-      if (get_intensity(j,i)+mean>1){
-        filtered.set_intensity(j,i,1);
-      }
-      else if ((get_intensity(j,i)+mean)<0){
-        filtered.set_intensity(j,i,0);
-
-      }
-      else{
-        filtered.set_intensity(j,i,get_intensity(j,i)+mean);
-      }
-      conteneur.clear();
-    }
-  }
-  return filtered;
-}
-
-
-
-Picture Picture::without_noise(){
-  Picture filtered=clone();
-
-  for(int i=0;i<x_length;i++){
-    for(int j=0;j<y_length;j++){
-      filtered.set_intensity(j,i,min((float)(1+pow(get_intensity(j,i),1))*get_intensity(j,i),(float)1));
-
-    }
-  }
-  return filtered;
 }
