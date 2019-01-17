@@ -14,7 +14,7 @@ Picture::Picture(const std::string& filename){
 }
 
 Picture::Picture(unsigned int x_length,unsigned int y_length){
-  Mat image(y_length,x_length,CV_8UC1);
+  Mat image(y_length,x_length,CV_8UC1,Scalar(255));
   picture=image.clone();
   this->x_length=x_length;
   this->y_length=y_length;
@@ -29,7 +29,7 @@ Picture::Picture(const cv::Mat& pic){
 Picture::Picture(){
   x_length=0;
   y_length=0;
-  Mat image(0,0,CV_8UC1);
+  Mat image(0,0,CV_8UC1,Scalar(255));
   picture=image;
 }
 
@@ -126,9 +126,9 @@ float** Picture::get_matrix(){
   return matrix;
 }
 
-Point_<int> Picture::center_of_pressure(){
+Point Picture::center_of_pressure(){
   float threshold=0.1;
-  Picture pressure_pic = this->clone();
+  Picture pressure_pic = clone();
   vector<Point> point_threshold;
   for(int i = 0 ; i < x_length ; i++){
     for(int j = 0; j< y_length ; j++){
@@ -151,12 +151,12 @@ Point_<int> Picture::center_of_pressure(){
     if(i==0){
       min_distance=distance[i];
     }
-    else if(min(min_distance,distance[i])==distance[i]){
+    else if(distance[i]<min_distance){
       indice=i;
       min_distance=distance[i];
     }
   }
-return(point_threshold[indice]);
+  return(point_threshold[indice]);
 }
 
 //win_size must be odd ! Apply gaussian filter to the picture
@@ -167,12 +167,12 @@ Picture Picture::apply_gaussian_blur(int win_size=5)const{
   return blured_Pic;
 }
 
-Point Picture::get_index_maximum_intensity()const{
+Point Picture::get_index_minimum_intensity()const{
   Point coord_min(0,0);
   Point coord_max(0,0);
   double x,y;
   minMaxLoc(picture, &x, &y, &coord_min, &coord_max);
-  return coord_max;
+  return coord_min;
 }
 
 void Picture::print_pression_center_gauss_threshold(){

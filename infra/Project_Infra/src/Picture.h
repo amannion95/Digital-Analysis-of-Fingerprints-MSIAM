@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <math.h>
-#include <cstdlib>
-#include <algorithm>    // std::max
+#include <cstdlib> // absolute value
+#include <algorithm>  // std::max
 
 class Picture{
 
@@ -70,7 +70,8 @@ class Picture{
     Picture extract_ellipse_pic(cv::Point center, unsigned int a,unsigned int b);
 
 
-  //---------------------------test--------------------------
+    //---------------------------test--------------------------
+
    //return ellipse with the right color
    Picture apply_anisotrope(cv::Point center,unsigned int a,unsigned int b);
 
