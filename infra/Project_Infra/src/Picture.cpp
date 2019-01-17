@@ -4,7 +4,6 @@
 #include <opencv2/opencv.hpp>
 #include <math.h>
 #include <cstdlib> // absolute value
-#include <vector>
 #include <algorithm>
 
 using namespace cv;
