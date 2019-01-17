@@ -5,6 +5,7 @@
 #include <math.h>
 #include <cstdlib> // absolute value
 #include <vector>
+#include <algorithm>
 
 using namespace cv;
 using namespace std;
@@ -17,7 +18,7 @@ Picture::Picture(const std::string& filename){
 }
 
 Picture::Picture(unsigned int x_length,unsigned int y_length){
-  Mat image(y_length,x_length,CV_8UC1);
+  Mat image(y_length,x_length,CV_8UC1,Scalar(255));
   picture=image.clone();
   this->x_length=x_length;
   this->y_length=y_length;
@@ -32,7 +33,7 @@ Picture::Picture(const cv::Mat& pic){
 Picture::Picture(){
   x_length=0;
   y_length=0;
-  Mat image(0,0,CV_8UC1);
+  Mat image(0,0,CV_8UC1,Scalar(255));
   picture=image;
 }
 
@@ -160,9 +161,9 @@ float** Picture::get_matrix(){
   return matrix;
 }
 
-Point_<int> Picture::center_of_pressure(){
+Point Picture::center_of_pressure(){
   float threshold=0.1;
-  Picture pressure_pic = this->clone();
+  Picture pressure_pic = clone();
   vector<Point> point_threshold;
   for(int i = 0 ; i < x_length ; i++){
     for(int j = 0; j< y_length ; j++){
@@ -170,7 +171,7 @@ Point_<int> Picture::center_of_pressure(){
         pressure_pic.set_intensity(j,i,1);
       }
       else{
-        //cout << get_intensity(j,i) << "    " ;
+        //cout << get_intensity(jmin(min_distance,distance[i])==min(min_distance,distance[i])==,i) << "    " ;
         point_threshold.push_back(Point(i,j));
       }
     }
@@ -186,12 +187,12 @@ Point_<int> Picture::center_of_pressure(){
     if(i==0){
       min_distance=distance[i];
     }
-    else if(min(min_distance,distance[i])==distance[i]){
+    else if(distance[i]<min_distance){
       indice=i;
       min_distance=distance[i];
     }
   }
-return(point_threshold[indice]);
+  return(point_threshold[indice]);
 }
 
 //-----------------------------------------------------------
@@ -205,13 +206,6 @@ Picture Picture::apply_gaussian_blur(int win_size=5)const{
   return blured_Pic;
 }
 
-Point Picture::get_index_maximum_intensity()const{
-  Point coord_min(0,0);
-  Point coord_max(0,0);
-  double x,y;
-  minMaxLoc(picture, &x, &y, &coord_min, &coord_max);
-  return coord_max;
-}
 
 Point Picture::get_index_minimum_intensity()const{
   Point coord_min(0,0);
@@ -221,26 +215,25 @@ Point Picture::get_index_minimum_intensity()const{
   return coord_min;
 }
 
-void Picture::print_pression_center(int size_win_gauss=5)const{
+void Picture::print_pression_center_gauss_threshold(){
   int x,y;
-  Picture img=apply_gaussian_blur(size_win_gauss);
+
+  Picture img=apply_threshold(0.1);
+  img=img.apply_gaussian_blur(51);
   Picture print(picture);
-  img.print_picture();
   x=img.get_index_minimum_intensity().x;
   y=img.get_index_minimum_intensity().y;
   for (int i=x-10;i<x+10;i++){
     for(int j=y-10;j<y+10;j++){
-      img.set_intensity(j,i,0.7);
       print.set_intensity(j,i,0.7);
     }
   }
-  img.print_picture();
   print.print_picture();
 }
 
-Point Picture::pressure_center_gauss(){
-  Picture img;
-  img=apply_gaussian_blur(31);
+Point Picture::pressure_center_gauss_threshold(){
+  Picture img=apply_threshold(0.1);
+  img=img.apply_gaussian_blur(51);
   return img.get_index_minimum_intensity();
 }
 
@@ -301,7 +294,7 @@ Picture Picture::extract_ellipse_pic(Point center, unsigned int a,unsigned int b
   Picture extraction=clone();
   for(int i=0;i<x_length;i++){
     for(int j=0;j<y_length;j++){
-      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) > 1){
+      if((double)((i-c1)*(i-c1)/pow(a,2) + (j-c2)*(j-c2)/pow(b,2)) >= 1){
         extraction.set_intensity(j,i,1);
       }
     }
@@ -339,48 +332,80 @@ vector<Point> Picture::get_0intensity_index (){
   return contain;
 }
 
-Point Picture::get_median_center(vector<Point> intensity_index){
-  vector<int> x_index;
-  vector<int> y_index;
-  Point coord(0,0);
 
-  for (vector<Point>::iterator i = intensity_index.begin() ; i != intensity_index.end(); i++){
-    x_index.push_back(i->x);
-    y_index.push_back(i->y);
-  }
+//ellipse. we have to add gaussian random law.
+Picture Picture::apply_anisotrope(cv::Point center,unsigned int a,unsigned int b){
+  Picture extrac_smoothed=extract_ellipse_pic(center,a,b);
 
-
-  sort(x_index.begin(),x_index.end());
-  sort(y_index.begin(),y_index.end());
-
-  if (intensity_index.size()==0){
-    cerr<<"Empty vector do not have any median value."<<endl;
-    return coord;
-  }
-  coord.x=x_index[intensity_index.size() / 2];
-  coord.y=y_index[intensity_index.size() / 2];
-  return coord;
-}
-
-//BAD RESULTS, NOT USABLE
-void Picture::print_median_center(int thresh=0.01){
-  int x,y;
-  Picture img=apply_threshold(thresh);
-  Picture print(picture);
-  Point* p=new Point(img.get_median_center(img.get_0intensity_index()));
-  x=p->x;
-  y=p->y;
-
-  for (int i=x-10;i<x+10;i++){
-    for(int j=y-10;j<y+10;j++){
-      img.set_intensity(j,i,0.7);
-      print.set_intensity(j,i,0.7);
+  float distance;
+  for(int i=0;i<extrac_smoothed.x_length;i++){
+    for (int j=0;j<extrac_smoothed.y_length;j++){
+      if (extrac_smoothed.get_intensity(j,i)!=1){
+        Point p(i,j);
+        distance=norm(center-p);
+        extrac_smoothed.set_intensity(j,i,fct_c_test(distance)*extrac_smoothed.get_intensity(j,i));
+      }
     }
   }
-  delete p;
-  img.print_picture();
-  print.print_picture();
-
+  return extrac_smoothed.extract_ellipse_pic(center,a,b);
 }
 
 
+
+
+
+// -----------------------------------------------------------------------------------
+void Picture::SAVE_PIC(string name){
+  imwrite(name, picture);
+}
+
+//winsize must be odd : filter
+
+Picture Picture::accentuation_diff(int winsize ){
+  float mean;
+  Picture filtered=clone();
+  int semi_size=(winsize-1)/2;
+  vector<float> conteneur;
+  for(int i=0;i<x_length-semi_size;i++){
+    for(int j=0;j<y_length-semi_size;j++){
+      for(int u=-semi_size;u<=semi_size;u++){
+        for(int v=-semi_size;v<=semi_size;v++){
+          if ((u!=0) || (v!=0 )){
+            conteneur.push_back(get_intensity(j,i)-get_intensity(v,u));
+          }
+        }
+      }
+
+      for(std::vector<float>::iterator it = conteneur.begin(); it != conteneur.end(); ++it){
+        mean += *it;
+      }
+      mean=mean/conteneur.size();
+      if (get_intensity(j,i)+mean>1){
+        filtered.set_intensity(j,i,1);
+      }
+      else if ((get_intensity(j,i)+mean)<0){
+        filtered.set_intensity(j,i,0);
+
+      }
+      else{
+        filtered.set_intensity(j,i,get_intensity(j,i)+mean);
+      }
+      conteneur.clear();
+    }
+  }
+  return filtered;
+}
+
+
+
+Picture Picture::without_noise(){
+  Picture filtered=clone();
+
+  for(int i=0;i<x_length;i++){
+    for(int j=0;j<y_length;j++){
+      filtered.set_intensity(j,i,min((float)(1+pow(get_intensity(j,i),1))*get_intensity(j,i),(float)1));
+
+    }
+  }
+  return filtered;
+}
