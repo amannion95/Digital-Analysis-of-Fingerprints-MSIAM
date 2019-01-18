@@ -45,7 +45,8 @@ Picture Picture::cast_rotation_polar(Point centre, double angle){
 }
 
 /*Rotation using nearest-neighbour interpolation to assign intensities; finds the
-minimum
+original pixel that has minimum Euclidean distance to the rotated point and matches
+their intensities
 */
 Picture Picture::nn_rotation_polar(Point centre, double angle){
   Picture rotated_pic(x_length, y_length);
