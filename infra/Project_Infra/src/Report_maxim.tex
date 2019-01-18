@@ -1,0 +1,85 @@
+\documentclass[]{report}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+
+% Title Page
+\title{Digital analysis of fingerprints}
+\author{Aidan MANNION, Maxime FAYS, Thomas EL JAMMAL, Tristan LOAEC}
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+	
+		
+				Given a set of optical fingerprint images, we will introduce mathematical filters and models we have created, to simulate artefacts that could occur during the fingerprint acquisition. An example is to try to answer the following question: given two images of the same finger: a "normal" one, and rotated one, how can one goes from the "normal" to the rotated ? \linebreak
+	The filters and models created will be implemented in C++, Although sometime we will use Python for better visualisation. 
+		
+	
+ 
+\end{abstract}
+\tableofcontents
+\part{Image Loading, Saving and Pixels Manipulation}
+\chapter{Starter}
+\section{Introduction: }
+The frame that will be used by default during the project will be the following: \\ \\
+The top left pixel will define the origin $(0,0)$,
+The coordinate of a pixel $(x,y)$ will be given by 
+$(x,y)\vec{e_1} + (x,y)\vec{e_2}$ where $\vec{e_1}$ will be the horizontal unit vector pointing from left to right, and where $\vec{e_2}$ will be the vertical unit vector pointing from top to bottom. \\
+In some case we will change the frame and/or the coordinate system we are working with, for practical purpose. \\ 
+The intensity values $x \in \mathbb{N}\cap[0,255]$ will be mapped into $y=f(x) \in \mathbb{Q} \cap[0,1]$ using the function : $$f(x)=\frac{x}{255}$$
+
+\part{Geometrical Warps}
+\section{Starter}
+\subsection{Introduction: }
+A plan rotation of angle $\theta$ of center $p$ is an easy mathematics concept that can be described as follow:\\
+Considering a pixel of coordinates $(x,y)$, the coordinates of the rotated pixel $(x',y')$ of angle $\theta$ and of center $(p_x,p_y)$  will be given by the formula: 
+$$  \begin{pmatrix}
+x' \\
+y'
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+cos(\theta) && -sin(\theta) \\
+sin(\theta) && cos(\theta)
+\end{pmatrix}
+\begin{pmatrix}
+x - p_x\\
+y-p_y
+\end{pmatrix} 
++ 
+\begin{pmatrix}
+p_x \\\ 
+p_y
+\end{pmatrix}
+$$
+The section will always consider a rotation of angle $\theta$ and of center $(p_x,p_y)$. \\
+Our goal is to rotate an image of fingerprints with any angle and center of rotation.
+The problems met in this transformation are:
+\begin{itemize}
+\item Resolution/Scale problems: if we rotate an image of a certain size $n*m$ of an angle $\theta$, it crops a part of the original image;
+\item Float to integer conversions: Pixels have integer coordinates but the rotation operation returns float number which can not be computed by opencv object in C++;
+\end{itemize}
+To achieve the rotation program we had different ideas:
+\begin{itemize}
+\item The 'brut' method which consists in applying the rotation to the original pixels; 
+\item The inverse method that led us to use the bilinear interpolation.
+\end{itemize}
+\subparagraph{Brut Method:\\}
+This method is the first idea we had.\\
+It consists in finding the position $(x',y')$ of the rotated pixels by applying the transformation to the pixel $(x,y)$ of the original image: 
+$$
+\left\{\begin{array}{ll}
+        x'= cos(\theta)(x-p_x) -sin(\theta)(y-p_y) + p_x \\
+        y' = sin(\theta)(x-p_x) + cos(\theta)(y-p_y) + p_y
+    \end{array}
+    \right.
+    $$
+ 
+$x'$ and $y'$ are float we cast them into integers values to set the intensity on the grid of the resulting image. This lead to the following problem:\\
+as we round $(x',y')$, some pixels from the resulting image will have undefined colors which lead to artefacts if we apply the inverse rotation.
+\end{document}          
+.
