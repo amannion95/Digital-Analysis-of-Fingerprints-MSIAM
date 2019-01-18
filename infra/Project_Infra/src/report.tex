@@ -1,0 +1,89 @@
+
+
+\documentclass[]{report}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+
+\title{}
+\author{}
+
+
+\begin{document}
+	
+	
+
+
+\maketitle
+\begin{center}
+\textbf{3 differents ways to translate picture} 
+\end{center}
+
+\begin{itemize}
+	
+	\item moove each pixels one by one
+	\item crop the zone which will still be in the picture after translation and paste it in a white picture
+	\item use the openCV function "warpAffine" with the right parameters which allow us to translate with floating parameters.
+
+\end{itemize}
+
+\newpage
+
+\begin{center}
+	\textbf{Many different ways to estimate the translation parameters $p_x$ and $p_y$ assuming that they are discrete values} 
+\end{center}
+
+\begin{itemize}
+	\item The greedy one : go through the whole picture and try each translation combinations and, for all of these, compute the error.\\
+	
+	\item A better one is locate the barycenter of both pictures, compare them and find two intervals (one for $p_x$and one for $p_y$). You will then be able to use the bruteforce algorithm described previously but only on these intervals.\\
+\end{itemize}
+
+/!\ insert picture here(the graphs)\\
+
+
+The absolute error picture show us that the translation parameter is not an integer.\\
+
+/!\ insert picture here( abs error int int)\\
+
+
+\newpage
+
+\begin{center}
+	\textbf{How to find the more closest couple ($\^p_x,\^p_y$) to the translation parameters ? } 
+	
+\end{center}
+
+\begin{algorithm}
+	\caption{Calculate ($\^p_x,\^p_y$)}
+	\begin{algorithmic} 
+		\REQUIRE We already know ($p_x^{*},p_y^{*}$) 
+		\FOR{$n \in [\![ 1, ... ]\!]$}
+			\FOR{$x \in [\![ -10, 10 ]\!]$}
+				\FOR{$y \in [\![ -10, 10 ]\!]$}\\
+					\STATE
+				
+					\STATE E[i] $\leftarrow$ error at point P ($p_x^{*}+\frac{x}{10^{-n}},p_y^{*}+\frac{y}{10^{-n}}$)
+					\STATE P[i] $\leftarrow$ ($p_x^{*}+\frac{x}{10^{-n}},p_y^{*}+\frac{y}{10^{-n}}$)
+					\STATE
+					
+					
+					
+		\ENDFOR
+		\ENDFOR
+		\STATE ($p_x^{*},p_y^{*}$) $\leftarrow$  P[ index(max(E)) ]
+		\STATE E $\leftarrow$ []
+		\ENDFOR
+		
+	\end{algorithmic}
+\end{algorithm}
+
+
+
+After this we obtain as absolute error picture :
+
+/!\ insert picture here( abs error float)\\
+
+
+\end{document}          
+
