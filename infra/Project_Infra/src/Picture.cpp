@@ -5,8 +5,6 @@
 using namespace cv;
 using namespace std;
 
-RNG rng(0);
-
 Picture::Picture(const std::string& filename){
   picture=imread(filename,  IMREAD_GRAYSCALE);
   x_length=(picture.size()).width;
@@ -146,6 +144,7 @@ Point Picture::center_of_pressure(){
   for(int i=0;i<point_threshold.size();i++){
     distance.push_back(0);
     for(int j=0;j<point_threshold.size();j++){
+      //maybe this could be optimised??
       distance[i]=distance[i]+float(norm(point_threshold[i]-point_threshold[j]));
     }
     if(i==0){

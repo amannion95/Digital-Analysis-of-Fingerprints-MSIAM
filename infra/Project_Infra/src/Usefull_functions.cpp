@@ -85,8 +85,7 @@ bool compare_y_cord(Point a, Point b){
   if(a.y != b.y){
     return(a.y<b.y);
   }
-  else{s (93 sloc) 2.04 KB
-
+  else{
     return(a.x<b.x);
   }
 }

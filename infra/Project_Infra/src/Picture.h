@@ -58,9 +58,13 @@ class Picture{
     Picture log_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double c);
     Picture pow_transform_isotropic(cv::Point p, unsigned int a, unsigned int b, double c);
 
+
     //find pressure center (threshold + gaussian)
     Picture apply_threshold(float set_lim);
     std::vector<cv::Point> get_0intensity_index ();
+
+
+
 
     //return the ellipse
     Picture extract_ellipse_pic(cv::Point center, unsigned int a,unsigned int b);
@@ -71,10 +75,17 @@ class Picture{
    //return ellipse with the right color
    Picture apply_anisotrope(cv::Point center,unsigned int a,unsigned int b);
 
+
+
+
    Picture without_noise();
 
    //good filter for treating ellipse after function c
    Picture accentuation_diff(int winsize );
+
+
+
+
 
 //--------------------------------OPTIMIZATION PART-----------------------------
    Picture translation_x(int coeff);
@@ -104,7 +115,7 @@ class Picture{
     std::vector<cv::Point> original_coordt(float o);
     std::vector<cv::Point_<float>> list_send_point(float o);
     Picture bilinear_interpolation_cart( double o);
-    Picture cast_rotation_cart(Point centre,float o);
+    Picture cast_rotation_cart(cv::Point centre,float o);
     Picture cast_rotation_polar(cv::Point centre, double angle);
     Picture nn_rotation_polar(cv::Point centre, double angle);
     Picture bilinear_rotation_polar(cv::Point centre, double angle);
@@ -116,5 +127,21 @@ class Picture{
     Picture attenuation_weak_area(std::vector<cv::Point> area, cv::Point center, unsigned int a, unsigned int b);
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif
