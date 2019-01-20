@@ -141,7 +141,7 @@ Picture Picture::bilinear_rotation_polar(Point centre, double angle){
           float i1 = (xc - x)*lower_left + (x - xf)*lower_right;
 
           float upper_left = get_intensity(yc, xf);
-          float upper_right = get_intensity(yf, xf);
+          float upper_right = get_intensity(yc, xc);
           float i2 = (xc - x)*upper_left + (x - xf)*upper_right;
 
           //step 2: interpolation in y-direction
