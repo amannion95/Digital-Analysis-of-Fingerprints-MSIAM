@@ -33,8 +33,8 @@ std::vector<cv::Point> segment(cv::Point a, cv::Point b);
 bool compare_polar_cord(cv::Point2f a, cv::Point2f b);
 bool compare_y_cord(cv::Point a, cv::Point b);
 
-
-
+//--------------------point rotation---------------------//
+cv::Point2d pt_polar_rotation(cv::Point2d orig, cv::Point2d centre, double angle);
 
 
 

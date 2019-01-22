@@ -103,3 +103,24 @@ float intensity_sym(float i){
     return i - 2 * abs(i-0.5);
   }
 }*/
+
+Point2d pt_polar_rotation(Point2d orig, Point2d centre, double angle){
+  if(orig==centre){
+    return orig;
+  }
+  else{
+    double rad = angle * M_PI / 180;
+    double x = orig.x - centre.x;
+    double y = centre.y - orig.y;
+
+    double r = norm(Point(x,y));
+    double theta = atan2(y,x);
+
+    theta += rad;
+
+    double rx = r * cos(theta) + (double)centre.x;
+    double ry = (double)centre.y - r * sin(theta);
+
+    return Point2d(rx,ry);
+  }
+}

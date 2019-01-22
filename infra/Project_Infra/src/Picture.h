@@ -126,6 +126,10 @@ class Picture{
     std::vector<cv::Point> weak_pressure_area(std::vector<cv::Point> border, cv::Point center, unsigned int a, unsigned int b );
     Picture attenuation_weak_area(std::vector<cv::Point> area, cv::Point center, unsigned int a, unsigned int b);
 
+//--------------------------swirling-----------------------------------
+    Picture swirl(cv::Point centre, double twist, int radius);
+    float bilinear_interpolation(cv::Point2d p);
+    cv::Point local_cop(std::vector<cv::Point> region);
 };
 
 
