@@ -12,7 +12,7 @@ using namespace std;
 using namespace cv;
 
 /*this function creates rotated pixels by converting to polar co-ordinates and
-adding to the angle, then assigns pixel intensities to the target frame by simply
+adding to the angle then assigns pixel intensities to the target frame by simply
 casting the rotated pixel co-ordinates to integers*/
 Picture Picture::cast_rotation_polar(Point centre, double angle){
   Picture rotated_pic(x_length, y_length);
@@ -141,7 +141,7 @@ Picture Picture::bilinear_rotation_polar(Point centre, double angle){
           float i1 = (xc - x)*lower_left + (x - xf)*lower_right;
 
           float upper_left = get_intensity(yc, xf);
-          float upper_right = get_intensity(yf, xf);
+          float upper_right = get_intensity(yc, xc);
           float i2 = (xc - x)*upper_left + (x - xf)*upper_right;
 
           //step 2: interpolation in y-direction
@@ -156,4 +156,49 @@ Picture Picture::bilinear_rotation_polar(Point centre, double angle){
     }
   }
   return rotated_pic;
+}
+
+//Pointwise bilinear interpolation: more convenient for the swirl function
+float Picture::bilinear_interpolation(Point2d p){
+  if(p.x >= 0 && p.x < x_length && p.y >= 0 && p.y < y_length){
+    int xf = (int)floor(p.x);
+    int xc = (int)ceil(p.x);
+    int yf = (int)floor(p.y);
+    int yc = (int)ceil(p.y);
+
+    if(xf==xc || yf == yc){
+      return get_intensity((int)p.y, (int)p.x);
+    }
+    else{
+      float i1 = (xc - p.x) * get_intensity(yf,xf)
+                  + (p.x - xf) * get_intensity(yf,xc);
+      float i2 = (xc - p.x) * get_intensity(yc,xf)
+                  + (p.x - xf) * get_intensity(yc,xc);
+      float I = (yc - p.y) * i1 + (p.y - yf) * i2;
+      return I;
+    }
+  }
+  else{
+    return 0;
+  }
+}
+
+Picture Picture::swirl(Point centre, double twist, int radius){
+  Picture swirl_pic(x_length, y_length);
+  for(unsigned int i=0; i<x_length; i++){
+    for(unsigned int j=0; j<y_length; j++){
+      double dist = norm(centre - Point(i,j));
+      if(dist < radius){
+        double amt = 1 - dist / (double)radius;
+        double angle = 2 * twist * M_PI * amt;
+        Point2d p = pt_polar_rotation(Point2d((double)i, (double)j), centre, -1*angle);
+        float intensity = this->bilinear_interpolation(p);
+        swirl_pic.set_intensity(j, i, intensity);
+      }
+      else{
+        swirl_pic.set_intensity(j, i, get_intensity(j, i));
+      }
+    }
+  }
+  return swirl_pic;
 }
