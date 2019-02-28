@@ -1,0 +1,438 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Digital-Analysis-of-Fingerprints-MSIAM: Référence du fichier /home/tristan/Bureau/projet_final/Project_Infra/src/Useful_functions.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Digital-Analysis-of-Fingerprints-MSIAM
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier Useful_functions.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="Useful__functions_8h_source.html">Useful_functions.h</a>&quot;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+<code>#include &lt;opencv2/opencv.hpp&gt;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a821b1cf579966d47ec959ebcc668d306"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#a821b1cf579966d47ec959ebcc668d306">iitof</a> (int color)</td></tr>
+<tr class="memdesc:a821b1cf579966d47ec959ebcc668d306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that remap the intensity.  <a href="#a821b1cf579966d47ec959ebcc668d306">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a821b1cf579966d47ec959ebcc668d306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00fdf3082a52d421d5ded10a511dddda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#a00fdf3082a52d421d5ded10a511dddda">iftoi</a> (float color)</td></tr>
+<tr class="memdesc:a00fdf3082a52d421d5ded10a511dddda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that remap the intensity.  <a href="#a00fdf3082a52d421d5ded10a511dddda">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a00fdf3082a52d421d5ded10a511dddda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd78116e8f7e6f71c30ebc6c2adcbbb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#acd78116e8f7e6f71c30ebc6c2adcbbb9">display_matrix</a> (float **matrix, int row, int col)</td></tr>
+<tr class="memdesc:acd78116e8f7e6f71c30ebc6c2adcbbb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that display a matrix.  <a href="#acd78116e8f7e6f71c30ebc6c2adcbbb9">Plus de détails...</a><br /></td></tr>
+<tr class="separator:acd78116e8f7e6f71c30ebc6c2adcbbb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ecc856451cb296cf410f44f28c7d8e7"><td class="memItemLeft" align="right" valign="top">vector&lt; Point &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#a0ecc856451cb296cf410f44f28c7d8e7">segment</a> (Point p0, Point p1)</td></tr>
+<tr class="separator:a0ecc856451cb296cf410f44f28c7d8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa91eb68b9e5315d96d83102ede6ee3df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#aa91eb68b9e5315d96d83102ede6ee3df">compare_polar_cord</a> (Point2f a, Point2f b)</td></tr>
+<tr class="separator:aa91eb68b9e5315d96d83102ede6ee3df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d3277e003a2cb4e13f19ed5219056a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#a2d3277e003a2cb4e13f19ed5219056a1">compare_y_cord</a> (Point a, Point b)</td></tr>
+<tr class="separator:a2d3277e003a2cb4e13f19ed5219056a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb2bfbab622b3191da413c7df7f665e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#afb2bfbab622b3191da413c7df7f665e3">convolveDFT</a> (InputArray A, InputArray B, OutputArray C)</td></tr>
+<tr class="separator:afb2bfbab622b3191da413c7df7f665e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5a5352335462f5ed571688d4893e884"><td class="memItemLeft" align="right" valign="top">Matrix&lt; float, Dynamic, Dynamic &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#ae5a5352335462f5ed571688d4893e884">Evolutive_kernel_no_identity</a> (float t, int size)</td></tr>
+<tr class="memdesc:ae5a5352335462f5ed571688d4893e884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that compute an evolutive gaussian blurr.  <a href="#ae5a5352335462f5ed571688d4893e884">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ae5a5352335462f5ed571688d4893e884"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d69d31405b38c36fada023094d03102"><td class="memItemLeft" align="right" valign="top">Matrix&lt; float, Dynamic, Dynamic &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#a1d69d31405b38c36fada023094d03102">Evolutive_kernel</a> (float t, int size)</td></tr>
+<tr class="memdesc:a1d69d31405b38c36fada023094d03102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that compute an evolutive kernel matrix which is the weighted mean of an evolutive gaussain blurr and the identity kernel.  <a href="#a1d69d31405b38c36fada023094d03102">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a1d69d31405b38c36fada023094d03102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf8878aa9d1bbc8cb90c743bc76d521e"><td class="memItemLeft" align="right" valign="top">Point2d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Useful__functions_8cpp.html#abf8878aa9d1bbc8cb90c743bc76d521e">pt_polar_rotation</a> (Point2d orig, Point2d centre, double angle)</td></tr>
+<tr class="separator:abf8878aa9d1bbc8cb90c743bc76d521e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="aa91eb68b9e5315d96d83102ede6ee3df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa91eb68b9e5315d96d83102ede6ee3df">&#9670;&nbsp;</a></span>compare_polar_cord()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compare_polar_cord </td>
+          <td>(</td>
+          <td class="paramtype">Point2f&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Point2f&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d3277e003a2cb4e13f19ed5219056a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d3277e003a2cb4e13f19ed5219056a1">&#9670;&nbsp;</a></span>compare_y_cord()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compare_y_cord </td>
+          <td>(</td>
+          <td class="paramtype">Point&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Point&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afb2bfbab622b3191da413c7df7f665e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb2bfbab622b3191da413c7df7f665e3">&#9670;&nbsp;</a></span>convolveDFT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void convolveDFT </td>
+          <td>(</td>
+          <td class="paramtype">InputArray&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputArray&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputArray&#160;</td>
+          <td class="paramname"><em>C</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acd78116e8f7e6f71c30ebc6c2adcbbb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd78116e8f7e6f71c30ebc6c2adcbbb9">&#9670;&nbsp;</a></span>display_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void display_matrix </td>
+          <td>(</td>
+          <td class="paramtype">float **&#160;</td>
+          <td class="paramname"><em>matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function that display a matrix. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">matrix</td><td>a matrix of float. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>NULL </dd></dl>
+
+</div>
+</div>
+<a id="a1d69d31405b38c36fada023094d03102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d69d31405b38c36fada023094d03102">&#9670;&nbsp;</a></span>Evolutive_kernel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Matrix&lt;float,Dynamic,Dynamic&gt; Evolutive_kernel </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function that compute an evolutive kernel matrix which is the weighted mean of an evolutive gaussain blurr and the identity kernel. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>is the weight parameter. </td></tr>
+    <tr><td class="paramname">size</td><td>is the size of the gaussian kernel tu use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>a kernel matrix </dd></dl>
+
+</div>
+</div>
+<a id="ae5a5352335462f5ed571688d4893e884"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5a5352335462f5ed571688d4893e884">&#9670;&nbsp;</a></span>Evolutive_kernel_no_identity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Matrix&lt;float,Dynamic,Dynamic&gt; Evolutive_kernel_no_identity </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function that compute an evolutive gaussian blurr. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>is the weight parameter. </td></tr>
+    <tr><td class="paramname">size</td><td>is the size of the gaussian kernel tu use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>a kernel matrix </dd></dl>
+
+</div>
+</div>
+<a id="a00fdf3082a52d421d5ded10a511dddda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00fdf3082a52d421d5ded10a511dddda">&#9670;&nbsp;</a></span>iftoi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int iftoi </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function that remap the intensity. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">color</td><td>a float in [0,1]. 0 corresponds to black, 1 corresponds to white. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>int between in [0,255]. 0 corresponds to black, 255 corresponds to white. </dd></dl>
+
+</div>
+</div>
+<a id="a821b1cf579966d47ec959ebcc668d306"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a821b1cf579966d47ec959ebcc668d306">&#9670;&nbsp;</a></span>iitof()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float iitof </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function that remap the intensity. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">color</td><td>an integer in [0,255]. 0 corresponds to black, 255 corresponds to white. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>float between 0 and 1. 0 corresponds to black, 1 corresponds to white. </dd></dl>
+
+</div>
+</div>
+<a id="abf8878aa9d1bbc8cb90c743bc76d521e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf8878aa9d1bbc8cb90c743bc76d521e">&#9670;&nbsp;</a></span>pt_polar_rotation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Point2d pt_polar_rotation </td>
+          <td>(</td>
+          <td class="paramtype">Point2d&#160;</td>
+          <td class="paramname"><em>orig</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Point2d&#160;</td>
+          <td class="paramname"><em>centre</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0ecc856451cb296cf410f44f28c7d8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ecc856451cb296cf410f44f28c7d8e7">&#9670;&nbsp;</a></span>segment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;Point&gt; segment </td>
+          <td>(</td>
+          <td class="paramtype">Point&#160;</td>
+          <td class="paramname"><em>p0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Point&#160;</td>
+          <td class="paramname"><em>p1</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>
